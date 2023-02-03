@@ -21,17 +21,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        buildConfigField(
-            "String",
-            "API_KEY",
-            "\"${gradleLocalProperties(rootDir).getProperty("api.key")?:"local.properties 에 api.key 를 추가 하세요"}\""
-        )
-
-        buildConfigField(
-            "String",
-            "SECRET_KEY",
-            "\"${gradleLocalProperties(rootDir).getProperty("secret.key")?:"local.properties 에 secret.key 를 추가 하세요"}\""
-        )
     }
 
     buildTypes {
@@ -62,6 +51,7 @@ android {
             excludes.add("/META-INF/LGPL2.1")
         }
     }
+
 }
 
 dependencies {
@@ -82,6 +72,8 @@ dependencies {
     androidTestImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_JUNIT4)
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING)
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_MANIFEST)
+
+    implementation(Dependencies.JakeWharton.TIMBER)
 
     applyHilt()
 }
