@@ -12,6 +12,10 @@ private const val kapt = "kapt"
 private const val compileOnly = "compileOnly"
 
 object Dependencies {
+    object KwonDaeWon{
+        const val DOMAIN = ":kwon-dae-won:domain"
+        const val DATA = ":kwon-dae-won:data"
+    }
 
     object Mockito {
         const val VERSION = "4.3.1"
