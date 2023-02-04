@@ -29,14 +29,12 @@ class FlickrMoshiConverter<T>(
 
         return if (stat == "ok") {
             val jsonObjectKey:JsonObjectKey? = rawType.getAnnotation(JsonObjectKey::class.java)
-            val value = jsonObjectKey?.value?.let{ key->
+            val newValue = jsonObjectKey?.value?.let{ key->
                 val innerJsonValue:Map<*, *>? = jsonValue?.get(key) as? Map<*, *>
                 moshi.adapter<T>(type).fromJsonValue(innerJsonValue)
             }?:moshi.adapter<T>(type).fromJsonValue(jsonValue)
-
-            FlickrResponse.Success(value = value)
+            FlickrResponse.Success(value = newValue)
         } else {
-
             FlickrResponse.Failure(code = code?.toInt(), message = message)
         }
     }

@@ -10,4 +10,5 @@ interface FlickrRepository {
     suspend fun getRecent(perPage: Int, page: Int): Result<List<Photo>>
 
     suspend fun search(text: String, perPage: Int, page: Int): Result<List<Photo>>
+
 }

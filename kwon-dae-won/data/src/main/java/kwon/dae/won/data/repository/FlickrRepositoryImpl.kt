@@ -44,6 +44,6 @@ class FlickrRepositoryImpl @Inject constructor(
             is FlickrResponse.NetworkError -> Result.failure(response.exception)
             is FlickrResponse.Unexpected -> Result.failure(response.t ?: UnknownError())
         }
-
     }
+
 }

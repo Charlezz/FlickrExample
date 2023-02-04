@@ -13,7 +13,6 @@ class FlickrActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel
         setContent {
             // TODO: 대원님 화이팅!
         }
