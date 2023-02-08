@@ -1,15 +1,11 @@
 package hello.com.pose.shared.remote.di
 
-import com.assignment.cm.data.banner.BannerRemoteDataSource
-import com.assignment.cm.data.feed.FeedRemoteDataSource
-import com.assignment.cm.data.product.ProductRemoteDataSource
-import com.assignment.cm.remote.banner.DefaultBannerRemoteDataSource
-import com.assignment.cm.remote.feed.DefaultFeedRemoteDataSource
-import com.assignment.cm.remote.product.DefaultProductRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import hello.com.pose.shared.data.photo.PhotoRemoteDataSource
+import hello.com.pose.shared.remote.photo.PhotoRemoteDataSourceImpl
 
 
 @InstallIn(SingletonComponent::class)
@@ -17,17 +13,5 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class RemoteDataBindsModule {
 
     @Binds
-    abstract fun bindBannerRemoteDataSource(
-        dataSource: DefaultBannerRemoteDataSource
-    ): BannerRemoteDataSource
-
-    @Binds
-    abstract fun bindProductRemoteDataSource(
-        dataSource: DefaultProductRemoteDataSource
-    ): ProductRemoteDataSource
-
-    @Binds
-    abstract fun bindFeedRemoteDataSource(
-        dataSource: DefaultFeedRemoteDataSource
-    ): FeedRemoteDataSource
+    abstract fun bindPhotoRemoteDataSource(dataSource: PhotoRemoteDataSourceImpl): PhotoRemoteDataSource
 }

@@ -45,6 +45,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":hello-compose-app:shared:data"))
     implementation(Dependencies.SquareUp.Retrofit2.CORE)
     implementation(Dependencies.SquareUp.OkHttp3.CORE)
     implementation(Dependencies.SquareUp.OkHttp3.LOGGING_INTERCEPTOR)

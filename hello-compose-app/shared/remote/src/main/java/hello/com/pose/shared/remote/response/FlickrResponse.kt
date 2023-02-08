@@ -20,7 +20,7 @@ data class FlickrResponse(
         @Json(name = "perpage")
         val perpage: Int? = 0,
         @Json(name = "photo")
-        val photo: List<Photo?>? = listOf(),
+        val photo: List<Photo>? = listOf(),
         @Json(name = "total")
         val total: Int? = 0
     ) {
