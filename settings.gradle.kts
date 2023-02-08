@@ -5,3 +5,4 @@ include(
     ":good-bye-xml-app",
     ":sum3years-app",
 )
+include(":hello-compose-app:shared:domain")
