@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":hello-compose-app:ui:system"))
     implementation(project(":hello-compose-app:shared:domain"))
     implementation(project(":hello-compose-app:shared:data"))
     implementation(project(":hello-compose-app:shared:remote"))
