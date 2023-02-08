@@ -3,7 +3,6 @@ plugins {
     kotlin("android")
     id("dagger.hilt.android.plugin")
     kotlin("kapt")
-    id("com.google.devtools.ksp") version Dependencies.Jetbrains.Kotlin.KSP_VERSION
 }
 
 android {

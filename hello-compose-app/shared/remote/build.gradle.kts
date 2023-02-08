@@ -30,12 +30,6 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.COMPILER_VERSION
-    }
     packagingOptions {
         resources {
             excludes.add("/META-INF/AL2.0")

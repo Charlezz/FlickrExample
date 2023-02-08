@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import hello.com.pose.shared.remote.BuildConfig
 import hello.com.pose.shared.remote.service.FlickrService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
