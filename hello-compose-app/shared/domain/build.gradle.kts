@@ -9,10 +9,5 @@ java {
 }
 
 dependencies {
-    implementation(libs.kotlin.coroutines.core)
-    implementation(libs.javax)
-    implementation(libs.androidx.paging.common.ktx)
-
-    testImplementation(libs.junit4)
-    testImplementation(libs.kotlin.coroutines.test)
+    implementation(Dependencies.Jetbrains.KotlinX.COROUTINE_CORE)
 }

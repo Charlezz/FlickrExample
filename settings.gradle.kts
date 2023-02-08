@@ -6,3 +6,6 @@ include(
     ":sum3years-app",
 )
 include(":hello-compose-app:shared:domain")
+include(":hello-compose-app:shared:remote")
+include(":hello-compose-app:shared:data")
+include(":hello-compose-app:presentation:main")

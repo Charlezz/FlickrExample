@@ -235,6 +235,7 @@ object Dependencies {
             const val VERSION = "2.9.0"
             const val CORE = "com.squareup.retrofit2:retrofit:$VERSION"
             const val GSON = "com.squareup.retrofit2:converter-gson:$VERSION"
+            const val MOSHI = "com.squareup.retrofit2:converter-moshi:$VERSION"
             const val RXJAVA2 = "com.squareup.retrofit2:adapter-rxjava2:2.8.1"
         }
 
