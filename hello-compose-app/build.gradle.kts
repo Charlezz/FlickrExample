@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
+    id("com.google.devtools.ksp") version Dependencies.Jetbrains.Kotlin.KSP_VERSION
 }
 
 android {
@@ -46,6 +49,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":hello-compose-app:shared:domain"))
+    implementation(project(":hello-compose-app:shared:data"))
+    implementation(project(":hello-compose-app:shared:remote"))
+    implementation(project(":hello-compose-app:presentation:main"))
+
+    applyHilt()
 
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX)

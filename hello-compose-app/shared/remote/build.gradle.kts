@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "hello.com.pose"
+    namespace = "hello.com.pose.shared.remote"
     compileSdk = Project.compileSdk
 
     defaultConfig {
