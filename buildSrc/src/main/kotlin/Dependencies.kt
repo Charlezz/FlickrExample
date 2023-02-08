@@ -26,8 +26,8 @@ object Dependencies {
 
     object Jetbrains {
         object Kotlin {
-            const val VERSION = "1.7.10"
-            const val KSP_VERSION = "1.7.10-1.0.6"
+            const val VERSION = "1.7.20"
+            const val KSP_VERSION = "1.7.20-1.0.8"
             const val GRADLE_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:$VERSION"
             const val STD_LIB = "org.jetbrains.kotlin:kotlin-stdlib:$VERSION"
             const val STD_LIB_7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$VERSION"
@@ -140,8 +140,8 @@ object Dependencies {
 
         object Compose {
             // https://developer.android.com/jetpack/androidx/releases/compose#declaring_dependencies
-            const val VERSION = "1.3.0-beta03"
-            const val COMPILER_VERSION = "1.3.1"
+            const val VERSION = "1.3.2"
+            const val COMPILER_VERSION = "1.3.2"
 
             object Foundation {
                 // https://androidx.tech/artifacts/compose.foundation/*
