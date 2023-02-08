@@ -12,6 +12,17 @@ private const val kapt = "kapt"
 private const val compileOnly = "compileOnly"
 
 object Dependencies {
+    object KwonDaeWon{
+        const val DOMAIN = ":kwon-dae-won:domain"
+        const val DATA = ":kwon-dae-won:data"
+    }
+
+    object JavaX {
+        object Inject{
+            const val JAVAX_INJECT = "javax.inject:javax.inject:1"
+        }
+
+    }
 
     object Mockito {
         const val VERSION = "4.3.1"
@@ -234,6 +245,7 @@ object Dependencies {
         object Retrofit2 {
             const val VERSION = "2.9.0"
             const val CORE = "com.squareup.retrofit2:retrofit:$VERSION"
+            const val MOSHI = "com.squareup.retrofit2:converter-moshi:$VERSION"
             const val GSON = "com.squareup.retrofit2:converter-gson:$VERSION"
             const val MOSHI = "com.squareup.retrofit2:converter-moshi:$VERSION"
             const val RXJAVA2 = "com.squareup.retrofit2:adapter-rxjava2:2.8.1"
