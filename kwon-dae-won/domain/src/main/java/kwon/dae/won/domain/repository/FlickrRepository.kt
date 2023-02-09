@@ -1,5 +1,6 @@
 package kwon.dae.won.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import kwon.dae.won.domain.model.Photo
 
 /**

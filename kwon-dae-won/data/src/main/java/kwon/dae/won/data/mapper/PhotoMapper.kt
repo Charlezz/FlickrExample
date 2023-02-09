@@ -10,9 +10,14 @@ object PhotoMapper {
     fun from(dto: PhotoDTO): Photo {
         return Photo(
             id = dto.id,
+            owner = dto.owner,
             secret = dto.secret,
             server = dto.server,
-            title = dto.title
+            farm = dto.farm,
+            title = dto.title,
+            ispublic = dto.ispublic,
+            isfriend = dto.isfriend,
+            isfamily = dto.isfamily,
         )
     }
 }

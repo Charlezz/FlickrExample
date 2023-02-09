@@ -231,7 +231,7 @@ object Dependencies {
             const val COMPILER = "androidx.room:room-compiler:$VERSION"
             const val KTX = "androidx.room:room-ktx:$VERSION"
             const val ROOM_TESTING = "androidx.room:room-testing:$VERSION"
-            const val ROOM_PAGING = "androidx.room:room-paging:2.5.0-alpha03"
+            const val ROOM_PAGING = "androidx.room:room-paging:$VERSION"
         }
     }
 
@@ -247,7 +247,6 @@ object Dependencies {
             const val CORE = "com.squareup.retrofit2:retrofit:$VERSION"
             const val MOSHI = "com.squareup.retrofit2:converter-moshi:$VERSION"
             const val GSON = "com.squareup.retrofit2:converter-gson:$VERSION"
-            const val MOSHI = "com.squareup.retrofit2:converter-moshi:$VERSION"
             const val RXJAVA2 = "com.squareup.retrofit2:adapter-rxjava2:2.8.1"
         }
 
@@ -343,7 +342,7 @@ fun DependencyHandlerScope.applyOkHttp3() {
 }
 
 fun DependencyHandlerScope.applyRoom() {
-    ksp(Dependencies.AndroidX.Room.COMPILER)
+    kapt(Dependencies.AndroidX.Room.COMPILER)
     implementation(Dependencies.AndroidX.Room.RUNTIME)
     implementation(Dependencies.AndroidX.Room.KTX)
     implementation(Dependencies.AndroidX.Room.ROOM_TESTING)

@@ -25,8 +25,8 @@ class DownloadTest {
     fun downloadTest() {
         val countDownLatch = CountDownLatch(1)
 
-        val id = 52666144067
-        val secret = "7d0f4f6d6c"
+        val id = 52677539752
+        val secret = "6d706554fb"
         val serverId = 65535
         val url = "https://live.staticflickr.com/${serverId}/${id}_${secret}.jpg"
         val desc = "Corrida da turma Bravo - Primeira turma feminina do Colégio Naval 2023"
