@@ -1,14 +1,9 @@
 package kwon.dae.won
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -18,12 +13,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Size
 import kwon.dae.won.domain.model.Photo
+import kwon.dae.won.ui.loadImageData
 
 
 /**
@@ -35,27 +28,21 @@ fun FlickrApp(photos: LazyPagingItems<Photo>) {
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(100.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         items(photos.itemCount) { index ->
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // TODO : 상수로 빼기
-                val serverId = 65535
-                val url = "https://live.staticflickr.com/${serverId}"
                 if (photos[index]?.id?.isNotBlank() == true) {
                     var isImageLoading by remember { mutableStateOf(false) }
 
                     val painter = rememberAsyncImagePainter(
-                        // TODO : 함수 만들기
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(url + "/${photos[index]?.id}_${photos[index]?.secret}.jpg")
-                            .crossfade(true)
-                            .size(Size.ORIGINAL)
-                            .build()
+                        model = loadImageData(
+                            LocalContext.current,
+                            photos[index]?.id,
+                            photos[index]?.secret
+                        )
                     )
 
                     isImageLoading = when (painter.state) {
@@ -68,8 +55,7 @@ fun FlickrApp(photos: LazyPagingItems<Photo>) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .height(150.dp)
-                                .width(150.dp),
+                                .fillMaxSize(),
                             painter = painter,
                             contentDescription = "Photo Image",
                             contentScale = ContentScale.FillBounds,
