@@ -8,21 +8,21 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kwon.dae.won.data.room.PhotosDatabase
 import kwon.dae.won.data.room.PhotosRemoteMediator
 import kwon.dae.won.data.usecase.DownloadUseCase
 import kwon.dae.won.domain.model.Photo
-import kwon.dae.won.domain.repository.FlickrRepository
 import kwon.dae.won.domain.usecase.GetRecentUseCase
 import javax.inject.Inject
 
 const val PAGE_SIZE = 60
+
 @HiltViewModel
 class FlickrViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getRecentUseCase: GetRecentUseCase,
     private val downloadUseCase: DownloadUseCase,
-    private val flickrRepository: FlickrRepository,
     private val photosRemoteMediator: PhotosRemoteMediator,
     private val photosDatabase: PhotosDatabase,
 ) : ViewModel() {
@@ -37,9 +37,11 @@ class FlickrViewModel @Inject constructor(
             pagingSourceFactory = {
                 photosDatabase.getPhotosDao().getPhotos()
             },
-            remoteMediator = PhotosRemoteMediator(
-                flickrRepository,
-                photosDatabase,
-            )
+            remoteMediator = photosRemoteMediator
         ).flow
+
+    // TODO : PhotoSize suffix 추가 by Daewon
+    fun downloadPhoto(fileName: String, desc: String, url: String) =
+        downloadUseCase(fileName, desc, url)
+
 }
