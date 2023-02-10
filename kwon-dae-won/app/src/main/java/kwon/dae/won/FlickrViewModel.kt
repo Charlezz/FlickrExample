@@ -16,7 +16,7 @@ import kwon.dae.won.domain.repository.FlickrRepository
 import kwon.dae.won.domain.usecase.GetRecentUseCase
 import javax.inject.Inject
 
-const val PAGE_SIZE = 100
+const val PAGE_SIZE = 60
 @HiltViewModel
 class FlickrViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
