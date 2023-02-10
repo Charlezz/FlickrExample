@@ -1,4 +1,4 @@
-package kwon.dae.won
+package kwon.dae.won.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,6 @@ import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import kwon.dae.won.domain.model.Photo
-import kwon.dae.won.ui.loadImageData
 
 
 /**
@@ -55,7 +54,8 @@ fun FlickrApp(photos: LazyPagingItems<Photo>) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .fillMaxSize(),
+                                .width(200.dp)
+                                .height(150.dp),
                             painter = painter,
                             contentDescription = "Photo Image",
                             contentScale = ContentScale.FillBounds,

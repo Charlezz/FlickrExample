@@ -23,10 +23,6 @@ class PhotosRemoteMediator @Inject constructor(
     private val photosDatabase: PhotosDatabase,
 ) : RemoteMediator<Int, Photo>() {
 
-    override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
-    }
-
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Photo>

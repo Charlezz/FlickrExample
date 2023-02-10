@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.compose.collectAsLazyPagingItems
 import dagger.hilt.android.AndroidEntryPoint
+import kwon.dae.won.ui.FlickrApp
 
 @AndroidEntryPoint
 class FlickrActivity : AppCompatActivity() {
