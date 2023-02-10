@@ -15,9 +15,8 @@ class FlickrActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // TODO: 대원님 화이팅!
             val photos = viewModel.getRecentPhotos().collectAsLazyPagingItems()
-            FlickrScreen(photos)
+            FlickrApp(photos)
         }
     }
 }
