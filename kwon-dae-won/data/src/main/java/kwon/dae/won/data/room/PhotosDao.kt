@@ -21,6 +21,9 @@ interface PhotosDao {
     @Query("SELECT * FROM photos ORDER BY id DESC")
     fun getPhotos(): PagingSource<Int, Photo>
 
+    @Query("SELECT * FROM photos WHERE id = :id")
+    fun getPhotosById(id: String): List<Photo>
+
     @Query("DELETE FROM photos")
     suspend fun clearAllPhotos()
 }
