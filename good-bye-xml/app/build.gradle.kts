@@ -47,6 +47,9 @@ android {
 
 dependencies {
 
+    implementation(project(Dependencies.GoodByeXml.DOMAIN))
+    implementation(project(Dependencies.GoodByeXml.DATA))
+
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX)
     implementation(Dependencies.AndroidX.Activity.ACTIVITY_COMPOSE)

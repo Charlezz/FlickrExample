@@ -12,7 +12,6 @@ private const val kapt = "kapt"
 private const val compileOnly = "compileOnly"
 
 object Dependencies {
-
     object Mockito {
         const val VERSION = "4.3.1"
         const val MOCKITO_CORE = "org.mockito:mockito-core:$VERSION"
@@ -281,6 +280,10 @@ object Dependencies {
         const val TEST = "org.orbit-mvi:orbit-test:$VERSION"
     }
 
+    object GoodByeXml {
+        const val DOMAIN = ":good-bye-xml:domain"
+        const val DATA = ":good-bye-xml:data"
+    }
 }
 
 
