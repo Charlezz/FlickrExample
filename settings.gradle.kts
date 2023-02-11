@@ -5,5 +5,6 @@ include(
     ":sum3years-app",
 
     ":good-bye-xml:app",
+    ":good-bye-xml:data",
     ":good-bye-xml:domain"
 )
