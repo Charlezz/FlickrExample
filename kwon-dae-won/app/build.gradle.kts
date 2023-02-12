@@ -62,10 +62,13 @@ dependencies {
     implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX)
+    implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
     implementation(Dependencies.AndroidX.Activity.ACTIVITY_COMPOSE)
     implementation(Dependencies.AndroidX.Compose.UI.UI)
     implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
+    implementation(Dependencies.Io.Coil.COIL_COMPOSE)
     testImplementation(Dependencies.Junit.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
@@ -76,4 +79,5 @@ dependencies {
     implementation(Dependencies.JakeWharton.TIMBER)
 
     applyHilt()
+    applyRoom()
 }

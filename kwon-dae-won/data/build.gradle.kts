@@ -57,6 +57,8 @@ dependencies {
 
     implementation(Dependencies.SquareUp.Retrofit2.CORE)
     implementation(Dependencies.SquareUp.Retrofit2.MOSHI)
+    implementation(Dependencies.AndroidX.Room.ROOM_PAGING)
 
     applyHilt()
+    applyRoom()
 }

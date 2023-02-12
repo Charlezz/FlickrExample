@@ -10,7 +10,7 @@ import javax.inject.Inject
  * @author soohwan.ok
  * @since
  */
-class DownloadUseCase @Inject constructor(
+class  DownloadUseCase @Inject constructor(
     private val context: Context
 ) {
 
