@@ -1,5 +1,6 @@
 package com.sum3years.ui.main
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -35,7 +37,7 @@ fun PhotoListContent(
     endOfList: (Boolean) -> Unit,
 ) {
     val itemCount = photoList.size
-    val scrollState = rememberLazyGridState(itemCount)
+    val scrollState = rememberLazyGridState()
     var loadedItems = 0
 
     val minSize: Dp = 100.dp
@@ -44,10 +46,6 @@ fun PhotoListContent(
         modifier = modifier.fillMaxSize(),
         color = Color(0xffEEEEEE),
     ) {
-        // Reached the end
-        if (loadedItems == itemCount && !scrollState.isScrollInProgress) {
-            endOfList(true)
-        }
         // List of Photos
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
@@ -61,19 +59,33 @@ fun PhotoListContent(
         ) {
             itemsIndexed(
                 items = photoList,
-                key = { _: Int, item: PhotoUIModel ->
-                    item.id
+                key = { index: Int, item: PhotoUIModel ->
+                    "$index/${item.photoId}"
                 },
             ) { index: Int, photo: PhotoUIModel ->
                 loadedItems = maxOf(loadedItems, index + 1)
-                Box(modifier = Modifier.width(minSize).aspectRatio(1f).fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .width(minSize)
+                        .aspectRatio(1f)
+                        .fillMaxSize(),
+                ) {
                     AsyncImage(
                         model = photo.loadUrlSmall,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize().clickable { onClick(photo) },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { onClick(photo) },
                     )
                 }
+            }
+        }
+        // Reached the end
+        LaunchedEffect(scrollState.isScrollInProgress) {
+            if (loadedItems == itemCount && !scrollState.isScrollInProgress) {
+                Log.d("로그", "_PhotoListContent: Bottom reached!!")
+                endOfList(true)
             }
         }
     }

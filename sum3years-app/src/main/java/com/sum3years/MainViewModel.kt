@@ -38,7 +38,6 @@ class MainViewModel(
                     Log.d("로그", "MainViewModel_search: newData = $newData")
                     if (newData.isNotEmpty()) {
                         _photoList.value = _photoList.value + newData
-//                        _photoList.emit((_photoList.value + newData).toImmutableList())
                         Log.d(
                             "로그",
                             "MainViewModel_search: size: ${photoList.value.size}, photoList = ${photoList.value}",

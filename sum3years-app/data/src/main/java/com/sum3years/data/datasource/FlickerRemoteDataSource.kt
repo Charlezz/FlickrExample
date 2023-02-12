@@ -10,8 +10,8 @@ class FlickerRemoteDataSource(private val service: FlickerService) : FlickerData
         return service.getPhotos(
             apiKey = BuildConfig.FLICKER_API_KEY,
             text = query,
-            page = 1,
-            pageSize = 20,
+            page = page,
+            pageSize = pageSize,
         ).runCatching {
             if (code() == 200) {
                 body()?.photos?.photo ?: emptyList()
