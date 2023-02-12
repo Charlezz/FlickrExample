@@ -11,4 +11,5 @@ java {
 dependencies {
     implementation(Dependencies.Jetbrains.KotlinX.COROUTINE_CORE)
     implementation("javax.inject:javax.inject:1")
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMMON)
 }
