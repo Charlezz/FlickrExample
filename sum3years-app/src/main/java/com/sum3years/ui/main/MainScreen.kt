@@ -126,11 +126,10 @@ fun MainScreen(
             }
 
             SearchDisplay.SearchHistory -> {
-                SearchHistory(histories = state.searchHistory) {
-                    var text = state.query.text
-                    if (text.isEmpty()) text = it else text += " $it"
-                    text.trim()
-                    state.query = TextFieldValue(text, TextRange(text.length))
+                SearchHistory(histories = state.searchHistory) { history ->
+                    state.query = TextFieldValue(history, TextRange(history.length))
+                    viewModel.search(state.query.text)
+                    focusManager.clearFocus()
                 }
             }
 
