@@ -58,6 +58,7 @@ dependencies {
     implementation(project(mapOf("path" to ":sum3years-app:data")))
     implementation(project(mapOf("path" to ":sum3years-app:domain")))
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
     testImplementation(Dependencies.Junit.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
@@ -65,4 +66,5 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING)
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_MANIFEST)
     applyHilt()
+    implementation(Dependencies.Io.Coil.COIL_COMPOSE)
 }
