@@ -11,6 +11,6 @@ class GetPhotoForRecentUseCase @Inject constructor(
     private val repository: FlickrRepository
 ) {
     suspend operator fun invoke(perPage: Int = 50, page: Int = 1): Flow<PagingData<Photo>> {
-        return repository.getPhotosForRecentPaging(perPage, page)
+        return repository.getPhotosForRecent(perPage, page)
     }
 }

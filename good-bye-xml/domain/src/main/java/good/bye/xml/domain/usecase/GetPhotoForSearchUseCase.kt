@@ -11,6 +11,6 @@ class GetPhotoForSearchUseCase @Inject constructor(
     private val repository: FlickrRepository
 ) {
     suspend operator fun invoke(keyword: String, perPage: Int = 50, page: Int = 1): Flow<PagingData<Photo>> {
-        return repository.getPhotosForSearchPaging(keyword, perPage, page)
+        return repository.getPhotosForSearch(keyword, perPage, page)
     }
 }
