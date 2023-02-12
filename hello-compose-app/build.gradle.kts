@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
 }
 
 android {
@@ -46,6 +48,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":hello-compose-app:ui:system"))
+    implementation(project(":hello-compose-app:shared:domain"))
+    implementation(project(":hello-compose-app:shared:data"))
+    implementation(project(":hello-compose-app:shared:remote"))
+    implementation(project(":hello-compose-app:presentation:main"))
+
+    applyHilt()
 
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX)
@@ -53,6 +62,8 @@ dependencies {
     implementation(Dependencies.AndroidX.Compose.UI.UI)
     implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
+    implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
+    implementation(Dependencies.Io.Coil.COIL_COMPOSE)
     testImplementation(Dependencies.Junit.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
