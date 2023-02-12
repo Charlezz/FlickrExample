@@ -42,7 +42,7 @@ fun MainScreen(
     viewModel: MainViewModel,
     onClick: (PhotoUIModel) -> Unit,
 ) {
-    Column(modifier = modifier.widthIn(min = 100.dp, max = 500.dp)) {
+    Column(modifier = modifier.widthIn(min = 100.dp)) {
         val context = LocalContext.current
         val focusManager = LocalFocusManager.current
         val keyboardController = LocalSoftwareKeyboardController.current
