@@ -2,10 +2,11 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
+    id("com.google.devtools.ksp") version Dependencies.Jetbrains.Kotlin.KSP_VERSION
 }
 
 android {
-    namespace = "com.example.data"
+    namespace = "com.sum3years.data"
     compileSdk = 33
 
     defaultConfig {
@@ -14,6 +15,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            "String",
+            "FLICKER_API_KEY",
+            "\"${com.android.build.gradle.internal.cxx.configure.gradleLocalProperties(rootDir).getProperty("key_flicker")}\""
+        )
     }
 
     buildTypes {
@@ -42,5 +49,15 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation(Dependencies.SquareUp.Retrofit2.CORE)
+    implementation(Dependencies.SquareUp.OkHttp3.CORE)
+    implementation(Dependencies.SquareUp.OkHttp3.LOGGING_INTERCEPTOR)
+    implementation(Dependencies.SquareUp.Retrofit2.MOSHI)
+
     applyHilt()
+    applyMoshi()
+
+    // Sandwich
+    implementation ("com.github.skydoves:sandwich:1.3.3")
 }

@@ -1,4 +1,4 @@
-package com.example.data
+package com.sum3years.domain
 
 import org.junit.Test
 
