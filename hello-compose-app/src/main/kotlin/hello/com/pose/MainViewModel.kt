@@ -9,8 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import hello.com.pose.shared.domain.photo.FetchPhotoListUseCase
 import hello.com.pose.shared.domain.photo.Photo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,8 +27,24 @@ class MainViewModel @Inject constructor(
     var pagingState by mutableStateOf(PagingState.IDLE)
     var prevQuery by mutableStateOf("")
 
+    private val currentSearchQuery = MutableStateFlow("")
+    val searchQuery = currentSearchQuery.asStateFlow()
+
+    fun setNewQuery(query: String) {
+        currentSearchQuery.value = query
+    }
+
+    init {
+        searchQueryByFlow()
+    }
+    private fun searchQueryByFlow() {
+        searchQuery.debounce(500L).onEach { query ->
+            if(query.isNotBlank()) {
+                getPhotosByQuery(query)
+            }
+        }.launchIn(viewModelScope)
+    }
     fun getPhotosByQuery(query: String) = viewModelScope.launch {
-        if(query.isBlank()) return@launch
         if (page == 1 || (page != 1 && canPaginate) && pagingState == PagingState.IDLE) {
             pagingState = if (page == 1) PagingState.LOADING else PagingState.PAGINATING
 

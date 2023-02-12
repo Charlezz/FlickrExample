@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
-    val query: MutableState<String> = remember { mutableStateOf("") }
     val lazyGridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
+    val currentSearchQuery by viewModel.searchQuery.collectAsState()
 
     val shouldStartPaginate = remember {
         derivedStateOf {
@@ -32,20 +32,19 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 
     LaunchedEffect(key1 = shouldStartPaginate.value) {
         if (shouldStartPaginate.value && viewModel.pagingState == PagingState.IDLE) {
-            viewModel.getPhotosByQuery(query.value)
+            viewModel.getPhotosByQuery(currentSearchQuery)
         }
     }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(8.dp)) {
-            SearchBar(text = query.value,
+            SearchBar(text = currentSearchQuery,
                 inputChange = {
-                    query.value = it
-                    viewModel.getPhotosByQuery(query.value)
+                    viewModel.setNewQuery(it)
                 })
             SearchList(viewModel, lazyGridState)
-            LaunchedEffect(key1 = query.value) {
-                if (viewModel.prevQuery != query.value) {
+            LaunchedEffect(key1 = currentSearchQuery) {
+                if (viewModel.prevQuery != currentSearchQuery) {
                     coroutineScope.launch {
                         lazyGridState.animateScrollToItem(index = 0)
                     }
