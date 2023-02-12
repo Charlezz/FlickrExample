@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
@@ -66,7 +66,7 @@ fun PhotoListContent(
                 },
             ) { index: Int, photo: PhotoUIModel ->
                 loadedItems = maxOf(loadedItems, index + 1)
-                Box(modifier = Modifier.width(minSize).height(minSize).fillMaxSize()) {
+                Box(modifier = Modifier.width(minSize).aspectRatio(1f).fillMaxSize()) {
                     AsyncImage(
                         model = photo.loadUrlSmall,
                         contentDescription = null,
