@@ -48,6 +48,8 @@ dependencies {
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
 
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
+
     applyRoom()
     applyOkHttp3()
     applyMoshi()

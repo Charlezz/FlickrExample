@@ -1,58 +1,32 @@
 package good.bye.xml.data.repository
 
-import com.example.network.model.NetworkResult
-import com.example.network.model.photos.PhotoResponse
-import good.bye.xml.data.mapper.toDomain
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import good.bye.xml.data.pagingsource.PhotoPagingSourceRecent
+import good.bye.xml.data.pagingsource.PhotoPagingSourceSearch
 import good.bye.xml.data.remote.FlickrRemoteDataSource
 import good.bye.xml.domain.model.photo.Photo
-import good.bye.xml.domain.model.ResultWrapper
 import good.bye.xml.domain.repository.FlickrRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FlickrRepositoryImpl @Inject constructor(
     val remoteDataSource: FlickrRemoteDataSource
 ): FlickrRepository {
 
-    override suspend fun getPhotosForRecent(perPage: Int, page: Int): ResultWrapper<List<Photo>> {
-        try {
-            validationCheck(perPage, page)
-
-            return remoteDataSource.getPhotosForRecent(perPage, page).let { response ->
-                when (response) {
-                    is NetworkResult.Success ->
-                        ResultWrapper.Success(response.data.photos.photo.map(PhotoResponse::toDomain))
-
-                    is NetworkResult.Error ->
-                        ResultWrapper.NetworkError(response.code, response.message)
-
-                    is NetworkResult.Exception ->
-                        ResultWrapper.Error(response.exception)
-                }
-            }
-        } catch (e: IllegalArgumentException) {
-            return ResultWrapper.Error(e)
-        }
+    override suspend fun getPhotosForRecent(perPage: Int, page: Int): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(pageSize = perPage),
+            pagingSourceFactory = { PhotoPagingSourceRecent(remoteDataSource) }
+        ).flow
     }
 
-    override suspend fun getPhotosForSearch(keyword: String, perPage: Int, page: Int): ResultWrapper<List<Photo>> {
-        try {
-            validationCheck(perPage, page)
-
-            return remoteDataSource.getPhotosForSearch(keyword, perPage, page).let { response ->
-                when (response) {
-                    is NetworkResult.Success ->
-                        ResultWrapper.Success(response.data.photos.photo.map(PhotoResponse::toDomain))
-
-                    is NetworkResult.Error ->
-                        ResultWrapper.NetworkError(response.code, response.message)
-
-                    is NetworkResult.Exception ->
-                        ResultWrapper.Error(response.exception)
-                }
-            }
-        } catch (e: IllegalArgumentException) {
-            ResultWrapper.Error(e)
-        }
+    override suspend fun getPhotosForSearch(keyword: String, perPage: Int, page: Int): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(pageSize = perPage),
+            pagingSourceFactory = { PhotoPagingSourceSearch(dataSource = remoteDataSource, keyword = keyword) }
+        ).flow
     }
 
     /** Validation Check
