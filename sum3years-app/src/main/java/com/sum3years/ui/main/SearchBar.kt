@@ -92,6 +92,7 @@ fun SearchBar(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchTextField(
     query: TextFieldValue,
@@ -104,6 +105,7 @@ fun SearchTextField(
     modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Surface(
         modifier = modifier
@@ -145,7 +147,10 @@ fun SearchTextField(
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Search,
                         ),
-                        keyboardActions = KeyboardActions(onSearch = { onSearch(query.text) }),
+                        keyboardActions = KeyboardActions(onSearch = {
+                            onSearch(query.text)
+                            keyboardController?.hide()
+                        }),
                     )
 
                     when {

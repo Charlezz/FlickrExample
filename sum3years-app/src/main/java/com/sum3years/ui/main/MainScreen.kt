@@ -1,6 +1,5 @@
 package com.sum3years.ui.main
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,7 +85,11 @@ fun MainScreen(
         SearchBar(
             query = state.query,
             onQueryChange = { state.query = it },
-            onSearch = { viewModel.search(it) },
+            onSearch = {
+                state.searchInProgress = true
+                viewModel.search(it)
+                focusManager.clearFocus()
+            },
             onSearchFocusChange = { state.focused = it },
             onClearQuery = { state.query = TextFieldValue("") },
             onBack = { state.query = TextFieldValue("") },
@@ -131,7 +135,7 @@ fun MainScreen(
             }
 
             SearchDisplay.Results -> {
-                Log.d("로그", "MainScreen: Result mode")
+                state.searchInProgress = false
                 PhotoListContent(
                     modifier = modifier,
                     photoList = state.searchResult,
@@ -145,7 +149,10 @@ fun MainScreen(
                     modifier = Modifier
                         .background(Color.White)
                         .fillMaxSize(),
-                )
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }
