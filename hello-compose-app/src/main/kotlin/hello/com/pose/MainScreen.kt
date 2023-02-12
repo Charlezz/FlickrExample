@@ -3,9 +3,7 @@ package hello.com.pose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,25 +13,41 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
+import hello.com.pose.composable.Alert
 import hello.com.pose.composable.SearchBar
 import hello.com.pose.shared.domain.photo.Photo
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val query: MutableState<String> = remember { mutableStateOf("") }
+    val lazyGridState = rememberLazyGridState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val shouldStartPaginate = remember {
+        derivedStateOf {
+            viewModel.canPaginate && lazyGridState.isLastItemVisible
+        }
+    }
+
+    LaunchedEffect(key1 = shouldStartPaginate.value) {
+        if (shouldStartPaginate.value && viewModel.pagingState == PagingState.IDLE) {
+            viewModel.getPhotosByQuery(query.value)
+        }
+    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(8.dp)) {
             SearchBar(text = query.value,
                 inputChange = {
                     query.value = it
-                    viewModel.getImageList(query.value)
+                    viewModel.getPhotosByQuery(query.value)
                 })
-
-            LazyVerticalGrid(columns = GridCells.Fixed(4)) {
-                viewModel.photos.value.data.let { photo ->
-                    items(photo) {
-                        MainContentItem(photo = it)
+            SearchList(viewModel, lazyGridState)
+            LaunchedEffect(key1 = query.value) {
+                if (viewModel.prevQuery != query.value) {
+                    coroutineScope.launch {
+                        lazyGridState.animateScrollToItem(index = 0)
                     }
                 }
             }
@@ -41,16 +55,41 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     }
 }
 
+@Composable
+fun SearchList(viewModel: MainViewModel, gridState: LazyGridState) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(4),
+        state = gridState
+    ) {
+        items(viewModel.photoList) { photo ->
+            MainContentItem(photo = photo)
+        }
+    }
+}
+
+val LazyGridState.isLastItemVisible: Boolean
+    get() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContentItem(photo: Photo) {
+    val showDownloadDialog = remember { mutableStateOf(false) }
+
+    if (showDownloadDialog.value) {
+        Alert(
+            showDialog = showDownloadDialog.value,
+            onDismiss = { showDownloadDialog.value = false },
+            photo
+        )
+    }
+
     Card(
         modifier = Modifier
             .padding(2.dp)
             .fillMaxWidth()
-            .height(150.dp)
+            .height(200.dp)
             .clickable(onClick = {
-
+                showDownloadDialog.value = true
             })
     ) {
         Image(
