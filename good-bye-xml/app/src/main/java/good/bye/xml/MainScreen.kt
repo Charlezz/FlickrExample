@@ -1,12 +1,10 @@
 package good.bye.xml
 
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -20,11 +18,15 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val searchKeyword by viewModel.searchKeyword
     val searchedImages = viewModel.searchedImages.collectAsLazyPagingItems()
 
+    var hasTextFieldFocus by remember { mutableStateOf(false) }
+
     val focusManager = LocalFocusManager.current
 
-    val onSearchClick = {
+    val lazyGridState = rememberLazyGridState()
+
+    // 스크롤 중이면서, TextField가 포커스를 갖고 있다면 focus clear
+    if (lazyGridState.isScrollInProgress && hasTextFieldFocus) {
         focusManager.clearFocus()
-        viewModel.search(searchKeyword)
     }
 
     val onImageClick = {
@@ -37,14 +39,18 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     ) {
         FlickrSearchBar(
             text = searchKeyword,
-            onTextChange = { text -> viewModel.updateSearchKeyword(text) },
-            onSearchClick = onSearchClick
+            onTextChange = viewModel::updateSearchKeyword,
+            onTextFieldFocusChanged = { hasFocus -> hasTextFieldFocus = hasFocus },
+            onSearchClick = {
+                focusManager.clearFocus()
+                viewModel.search(searchKeyword)
+            }
         )
 
         FlickrImageList(
             images = searchedImages,
             onClick = onImageClick,
-            modifier = Modifier
+            state = lazyGridState
         )
     }
 }

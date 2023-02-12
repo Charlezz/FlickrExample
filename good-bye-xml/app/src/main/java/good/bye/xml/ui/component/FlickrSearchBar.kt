@@ -9,6 +9,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -17,6 +18,7 @@ fun FlickrSearchBar(
     text: String,
     onTextChange: (String) -> Unit,
     onSearchClick: () -> Unit,
+    onTextFieldFocusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -37,7 +39,8 @@ fun FlickrSearchBar(
                     text = "검색어(예: 자연)",
                     color = Color.Black
                 )
-            }
+            },
+            modifier = Modifier.onFocusChanged { onTextFieldFocusChanged(it.hasFocus) }
         )
 
         Button(
