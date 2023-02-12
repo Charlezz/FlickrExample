@@ -62,6 +62,8 @@ dependencies {
     implementation(Dependencies.AndroidX.Compose.UI.UI)
     implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
+    implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
+    implementation(Dependencies.Io.Coil.COIL_COMPOSE)
     testImplementation(Dependencies.Junit.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
