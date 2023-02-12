@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -62,4 +64,6 @@ dependencies {
     androidTestImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_JUNIT4)
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING)
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_MANIFEST)
+
+    applyHilt()
 }
