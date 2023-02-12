@@ -2,8 +2,10 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version Dependencies.Jetbrains.Kotlin.KSP_VERSION
+    kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -36,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(Dependencies.GoodByeXml.DOMAIN))
+    implementation(project(Dependencies.GoodByeXml.NETWORK))
 
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
@@ -48,4 +51,5 @@ dependencies {
     applyRoom()
     applyOkHttp3()
     applyMoshi()
+    applyHilt()
 }
