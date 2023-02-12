@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">hello-compose-app</string>
+    <string name="search_bar_hint">Input search query here</string>
+    <string name="download_title">Would you like to download?</string>
+    <string name="download_sub_title">download image</string>
+    <string name="confirm">yes</string>
 </resources>

@@ -28,8 +28,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun MainScreen() {
-
-}
