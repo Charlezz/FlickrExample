@@ -23,9 +23,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.sum3years.R
 import com.sum3years.model.PhotoUIModel
 
 @ExperimentalAnimationApi
@@ -74,6 +76,7 @@ fun PhotoListContent(
                         model = photo.loadUrlSmall,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
+                        placeholder = painterResource(id = R.drawable.charlezzicon),
                         modifier = Modifier
                             .fillMaxSize()
                             .clickable { onClick(photo) },
