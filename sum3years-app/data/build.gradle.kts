@@ -57,6 +57,7 @@ dependencies {
 
     applyHilt()
     applyMoshi()
+    applyRoom()
 
     // Sandwich
     implementation ("com.github.skydoves:sandwich:1.3.3")

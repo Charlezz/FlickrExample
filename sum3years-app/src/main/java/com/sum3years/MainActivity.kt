@@ -24,11 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sum3years.data.datasource.FlickerRemoteDataSource
-import com.sum3years.data.network.FlickerService
-import com.sum3years.domain.repository.FlickerRepositoryImpl
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.ui.main.MainScreen
 import com.sum3years.ui.main.PhotoDetail

@@ -9,7 +9,9 @@ import com.sum3years.model.PhotoUIModel
 import com.sum3years.model.toUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +19,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: FlickerRepository,
 ) : ViewModel() {
-    val searchHistory = MutableStateFlow<List<String>>(listOf("history1", "history2", "history3"))
+
+    val searchHistory = repository.loadSearchHistories().stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        emptyList(),
+    )
 
     private var lastPage = 1
     private var loadFinished = false
@@ -39,7 +46,7 @@ class MainViewModel @Inject constructor(
             val response = repository.getPhotos(
                 query = query,
                 page = lastPage,
-                pageSize = PAGE_SIZE,
+                pageSize = if (lastPage == 1) PAGE_SIZE * 3 else PAGE_SIZE,
             )
             if (response.isSuccess) {
                 response.getOrNull()?.let {
@@ -64,10 +71,19 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+        insertHistory(query)
+    }
+
+    fun insertHistory(history: String) {
+        viewModelScope.launch {
+            repository.insertSearchHistory(history)
+        }
     }
 
     fun deleteHistory(history: String) {
-        // TODO Delete Search history
+        viewModelScope.launch {
+            repository.deleteSearchHistory(history)
+        }
     }
 
     private fun resetResult() {
