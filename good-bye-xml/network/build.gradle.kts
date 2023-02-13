@@ -2,20 +2,22 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     id("com.android.library")
-    id("com.google.devtools.ksp") version Dependencies.Jetbrains.Kotlin.KSP_VERSION
     kotlin("android")
     kotlin("kapt")
+    id("com.google.devtools.ksp") version Dependencies.Jetbrains.Kotlin.KSP_VERSION
     id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "good.bye.xml.data"
+    namespace = "good.bye.xml.network"
     compileSdk = Project.compileSdk
 
     defaultConfig {
         minSdk = Project.minSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "FLICKR_API_KEY", getApiKey("FLICKR_API_KEY"))
     }
 
     buildTypes {
@@ -37,21 +39,14 @@ android {
 }
 
 dependencies {
-    implementation(project(Dependencies.GoodByeXml.DOMAIN))
-    implementation(project(Dependencies.GoodByeXml.NETWORK))
 
-    implementation(Dependencies.AndroidX.CORE)
-    implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
-
-    testImplementation(Dependencies.Junit.JUNIT)
-
-    androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
-    androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
-
-    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
-
-    applyRoom()
-    applyOkHttp3()
+    implementation(Dependencies.SquareUp.Retrofit2.CORE)
+    implementation(Dependencies.SquareUp.Retrofit2.MOSHI)
     applyMoshi()
+    applyOkHttp3()
     applyHilt()
+}
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }

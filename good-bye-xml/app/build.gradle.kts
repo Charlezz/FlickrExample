@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -47,19 +49,36 @@ android {
 
 dependencies {
 
+    /* Module implementations */
     implementation(project(Dependencies.GoodByeXml.DOMAIN))
     implementation(project(Dependencies.GoodByeXml.DATA))
 
+    /* Implementations */
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX)
+    implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
     implementation(Dependencies.AndroidX.Activity.ACTIVITY_COMPOSE)
     implementation(Dependencies.AndroidX.Compose.UI.UI)
     implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
+    implementation(Dependencies.Io.Coil.COIL_COMPOSE)
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
+    implementation(Dependencies.AndroidX.Paging.PAGING_RUNTIME_KTX)
+
+
+    /* Test implementations */
     testImplementation(Dependencies.Junit.JUNIT)
+
+
+    /* Android Test implementations */
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
     androidTestImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_JUNIT4)
+
+
+    /* Debug implementations */
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING)
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_MANIFEST)
+
+    applyHilt()
 }
