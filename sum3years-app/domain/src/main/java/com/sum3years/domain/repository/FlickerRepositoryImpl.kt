@@ -20,7 +20,7 @@ class FlickerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteSearchHistory(history: String) {
-        deleteSearchHistory(history)
+        searchHistoryDataSource.deleteSearchHistory(history)
     }
 
     override fun loadSearchHistories(): Flow<List<String>> {
