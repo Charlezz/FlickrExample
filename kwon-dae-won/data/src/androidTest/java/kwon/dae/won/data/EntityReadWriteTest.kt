@@ -42,9 +42,9 @@ class EntityReadWriteTest {
     @kotlin.jvm.Throws(Exception::class)
     fun writePhotoAndReadInList() = runBlocking {
         val photoList = listOf(
-            PhotoDTO("1","","","",0,"",0,0,0),
-            PhotoDTO("2","","","",0,"",0,0,0),
-            PhotoDTO("3","","","",0,"",0,0,0)
+            PhotoDTO("1","","",""),
+            PhotoDTO("2","","",""),
+            PhotoDTO("3","","","")
         )
         photosDao.insertAll(photoList)
         val byId = photosDao.getPhotosById("2")

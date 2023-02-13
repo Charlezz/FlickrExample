@@ -12,12 +12,7 @@ object PhotoDtoMapper {
             id = photo.id,
             owner = photo.owner,
             secret = photo.secret,
-            server = photo.server,
-            farm = photo.farm,
             title = photo.title,
-            ispublic = photo.ispublic,
-            isfriend = photo.isfriend,
-            isfamily = photo.isfamily,
         )
     }
 }
