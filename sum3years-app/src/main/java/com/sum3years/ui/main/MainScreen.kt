@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -30,6 +29,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sum3years.MainViewModel
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.model.SearchDisplay
@@ -47,8 +47,8 @@ fun MainScreen(
         val focusManager = LocalFocusManager.current
         val keyboardController = LocalSoftwareKeyboardController.current
 
-        val searchHistory = viewModel.searchHistory.collectAsState()
-        val photoList = viewModel.photoList.collectAsState()
+        val searchHistory = viewModel.searchHistory.collectAsStateWithLifecycle()
+        val photoList = viewModel.photoList.collectAsStateWithLifecycle()
 
         val state = rememberSearchState(
             searchHistory = searchHistory.value,
