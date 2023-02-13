@@ -34,21 +34,24 @@ class FlickrActivity : AppCompatActivity() {
             )
 
             if (openDialog.first) {
-                DefaultAlertDialog(
-                    onDismissButtonClick = { openDialog = false to -1 },
-                    onConfirmButtonClick = {
-                        if (openDialog.second > 0) {
-                            photos[openDialog.second]?.let { item ->
-                                viewModel.downloadPhoto(
-                                    item.title,
-                                    item.owner,
-                                    imageUrl(item.id, item.secret)
-                                )
+                photos[openDialog.second]?.let { item ->
+                    DefaultAlertDialog(
+                        url = imageUrl(item.id, item.secret),
+                        onDismissButtonClick = { openDialog = false to -1 },
+                        onConfirmButtonClick = {
+                            if (openDialog.second > 0) {
+                                photos[openDialog.second]?.let { item ->
+                                    viewModel.downloadPhoto(
+                                        item.title,
+                                        item.owner,
+                                        imageUrl(item.id, item.secret)
+                                    )
+                                }
                             }
+                            openDialog = false to -1
                         }
-                        openDialog = false to -1
-                    }
-                )
+                    )
+                }
             }
         }
     }

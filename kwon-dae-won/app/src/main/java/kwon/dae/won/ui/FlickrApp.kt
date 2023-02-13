@@ -14,9 +14,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
+import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import kwon.dae.won.domain.model.Photo
+import timber.log.Timber
 
 
 /**
@@ -87,16 +89,22 @@ fun FlickrApp(
 
 @Composable
 fun DefaultAlertDialog(
+    url: String,
     onConfirmButtonClick: () -> Unit,
     onDismissButtonClick: () -> Unit,
 ) {
     AlertDialog(
-        onDismissRequest = { },
+        onDismissRequest = { onDismissButtonClick() },
         title = {
             Text(text = "다운로드 하시겠습니까?")
         },
         text = {
-            Text(text = "확인을 누르시면 사진이 다운로드됩니다.")
+            Box(
+                modifier = Modifier.wrapContentSize().fillMaxWidth()
+            ) {
+                AsyncImage(modifier = Modifier.align(Alignment.Center),model = url, contentDescription = null)
+            }
+
         },
         dismissButton = {
             TextButton(
