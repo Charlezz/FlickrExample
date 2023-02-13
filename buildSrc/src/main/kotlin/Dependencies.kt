@@ -1,6 +1,4 @@
 import org.gradle.kotlin.dsl.DependencyHandlerScope
-import org.gradle.kotlin.dsl.exclude
-import org.gradle.kotlin.dsl.project
 
 private const val debugApi = "debugApi"
 private const val debugImplementation = "debugImplementation"
@@ -12,16 +10,15 @@ private const val kapt = "kapt"
 private const val compileOnly = "compileOnly"
 
 object Dependencies {
-    object KwonDaeWon{
+    object KwonDaeWon {
         const val DOMAIN = ":kwon-dae-won:domain"
         const val DATA = ":kwon-dae-won:data"
     }
 
     object JavaX {
-        object Inject{
+        object Inject {
             const val JAVAX_INJECT = "javax.inject:javax.inject:1"
         }
-
     }
 
     object Mockito {
@@ -82,17 +79,17 @@ object Dependencies {
             const val SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$VERSION"
         }
 
-
         object Dagger {
             const val VERSION = "2.44"
-            const val HILT_ANDROID_GRADLE_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$VERSION"
+            const val HILT_ANDROID_GRADLE_PLUGIN =
+                "com.google.dagger:hilt-android-gradle-plugin:$VERSION"
             const val HILT_ANDROID = "com.google.dagger:hilt-android:$VERSION"
             const val HILT_COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
         }
     }
 
     object Android {
-        object Tools{
+        object Tools {
             object Build {
                 const val GRADLE = "com.android.tools.build:gradle:7.4.1"
             }
@@ -140,6 +137,8 @@ object Dependencies {
             const val LIFECYCLE_VIEWMODEL_COMPOSE =
                 "androidx.lifecycle:lifecycle-viewmodel-compose:$VERSION"
             const val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+            const val LIFECYCLE_RUNTIME_COMPOSE =
+                "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01"
         }
 
         object ConstraintLayout {
@@ -213,7 +212,6 @@ object Dependencies {
             const val CORE_TESTING = "androidx.arch.core:core-testing:2.1.0"
         }
 
-
         object Navigation {
             const val VERSION = "2.4.2"
             const val NAVIGATION_SAFE_ARGS_GRADLE_PLUGIN =
@@ -262,14 +260,11 @@ object Dependencies {
             const val VERSION = "2.8.1"
             const val LEAK_CANARY = "com.squareup.leakcanary:leakcanary-android:$VERSION"
         }
-
     }
-
 
     object JakeWharton {
         const val TIMBER = "com.jakewharton.timber:timber:5.0.1"
     }
-
 
     object Io {
         object Coil {
@@ -292,9 +287,7 @@ object Dependencies {
         const val COMPOSE = "org.orbit-mvi:orbit-compose:$VERSION"
         const val TEST = "org.orbit-mvi:orbit-test:$VERSION"
     }
-
 }
-
 
 fun DependencyHandlerScope.applyCompose() {
     implementation(Dependencies.AndroidX.Compose.Runtime.RUNTIME)
@@ -322,9 +315,7 @@ fun DependencyHandlerScope.applyCompose() {
     debugApi(Dependencies.AndroidX.CustomView.CUSTOM_VIEW_POOLING_CONTAINER)
 }
 
-
 fun DependencyHandlerScope.applyTest() {
-
     testImplementation(Dependencies.Junit.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT_KTX)
 

@@ -73,4 +73,5 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_MANIFEST)
     applyHilt()
     implementation(Dependencies.Io.Coil.COIL_COMPOSE)
+    implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_COMPOSE)
 }
