@@ -126,11 +126,18 @@ fun MainScreen(
             }
 
             SearchDisplay.SearchHistory -> {
-                SearchHistory(histories = state.searchHistory) { history ->
-                    state.query = TextFieldValue(history, TextRange(history.length))
-                    viewModel.search(state.query.text)
-                    focusManager.clearFocus()
-                }
+                SearchHistory(
+                    histories = state.searchHistory,
+                    onHistoryClick = { history ->
+                        state.searchInProgress = true
+                        state.query = TextFieldValue(history, TextRange(history.length))
+                        viewModel.search(state.query.text)
+                        focusManager.clearFocus()
+                    },
+                    onDelete = {
+                        viewModel.deleteHistory(it)
+                    },
+                )
             }
 
             SearchDisplay.Results -> {

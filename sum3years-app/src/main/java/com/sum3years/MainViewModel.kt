@@ -63,6 +63,10 @@ class MainViewModel(
         }
     }
 
+    fun deleteHistory(history: String) {
+        // TODO Delete Search history
+    }
+
     private fun resetResult() {
         _photoList.value = emptyList()
         lastPage = 1
