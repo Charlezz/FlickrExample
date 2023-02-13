@@ -7,11 +7,14 @@ import com.sum3years.data.model.FlickerException
 import com.sum3years.domain.repository.FlickerRepository
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.model.toUIModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: FlickerRepository,
 ) : ViewModel() {
     val searchHistory = MutableStateFlow<List<String>>(listOf("history1", "history2", "history3"))

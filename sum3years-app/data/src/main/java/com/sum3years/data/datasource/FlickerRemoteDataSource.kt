@@ -4,8 +4,11 @@ import com.sum3years.data.BuildConfig
 import com.sum3years.data.model.FlickerException
 import com.sum3years.data.model.Photo
 import com.sum3years.data.network.FlickerService
+import javax.inject.Inject
 
-class FlickerRemoteDataSource(private val service: FlickerService) : FlickerDataSource {
+class FlickerRemoteDataSource @Inject constructor(
+    private val service: FlickerService
+    ) : FlickerDataSource {
     override suspend fun getPhotos(query: String, page: Int, pageSize: Int): Result<List<Photo>> {
         return service.getPhotos(
             apiKey = BuildConfig.FLICKER_API_KEY,

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,16 +37,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
-            val viewModel: MainViewModel = viewModel(viewModelStoreOwner) {
-                val flickerService = FlickerService.flickerService
-                val dataSource = FlickerRemoteDataSource(flickerService)
-                val repository = FlickerRepositoryImpl(dataSource)
-                MainViewModel(repository)
-            }
             val errorMessage = viewModel.errorMessage.collectAsState()
 
             var showPhotoDetail by remember { mutableStateOf<PhotoUIModel?>(null) }
