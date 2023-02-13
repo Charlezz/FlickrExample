@@ -9,12 +9,14 @@ data class PhotoUIModel(
     val server: String = "",
     val title: String = "",
 ) {
-    val loadUrl: String
-        get() = "https://live.staticflickr.com/$server/${id}_$secret.jpg"
-    val loadUrlSmall: String
+    val loadUrlSmall: String // 검색화면 표시용
         get() = "https://live.staticflickr.com/$server/${id}_${secret}_n.jpg"
-    val loadUrlOriginal: String
+    val loadUrlMedium: String // 다운로드 확인용
+        get() = "https://live.staticflickr.com/$server/${id}_$secret.jpg"
+    val loadUrlOriginal: String // 다운로드용
         get() = "https://live.staticflickr.com/$server/${id}_${secret}_o.jpg"
+    val photoId: String
+        get() = "$owner/$id"
 }
 
 fun Photo.toUIModel(): PhotoUIModel {

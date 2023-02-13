@@ -1,6 +1,5 @@
 package com.sum3years.state
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,20 +19,16 @@ class SearchState<T>(
     var searching by mutableStateOf(false)
     var searchInProgress = searching
 
-    init {
-        Log.d("로그", "SearchState_searchResult: $searchResult")
-        Log.d("로그", "SearchState_searchResult: ${this.searchResult}")
-    }
-
     val searchDisplay: SearchDisplay
         get() = when {
             !focused && query.text.isEmpty() -> SearchDisplay.Initial
-            searchInProgress -> SearchDisplay.SearchInProgress
-            focused && query.text.isEmpty() -> SearchDisplay.SearchHistory
+            searchResult.isEmpty() && searchInProgress -> SearchDisplay.SearchInProgress
+            focused -> SearchDisplay.SearchHistory
             searchResult.isEmpty() -> {
                 previousQueryText = query.text
                 SearchDisplay.NoResults
             }
+
             else -> {
                 previousQueryText = query.text
                 SearchDisplay.Results

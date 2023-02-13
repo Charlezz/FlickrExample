@@ -25,7 +25,13 @@ class MainViewModel(
     private val _errorMessage = MutableStateFlow("")
     val errorMessage = _errorMessage.asStateFlow()
 
+    private val previousQuery = MutableStateFlow("")
+
     fun search(query: String) {
+        if (query != previousQuery.value) {
+            resetResult()
+            previousQuery.value = query
+        }
         viewModelScope.launch {
             val response = repository.getPhotos(
                 query = query,
@@ -38,7 +44,6 @@ class MainViewModel(
                     Log.d("로그", "MainViewModel_search: newData = $newData")
                     if (newData.isNotEmpty()) {
                         _photoList.value = _photoList.value + newData
-//                        _photoList.emit((_photoList.value + newData).toImmutableList())
                         Log.d(
                             "로그",
                             "MainViewModel_search: size: ${photoList.value.size}, photoList = ${photoList.value}",
@@ -56,6 +61,16 @@ class MainViewModel(
                 }
             }
         }
+    }
+
+    fun deleteHistory(history: String) {
+        // TODO Delete Search history
+    }
+
+    private fun resetResult() {
+        _photoList.value = emptyList()
+        lastPage = 1
+        loadFinished = false
     }
 
     companion object {
