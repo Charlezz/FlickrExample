@@ -48,6 +48,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun search(query: String) {
+        if (query.trim().isBlank()) return
         if (query != previousQuery.value) {
             resetResult()
             previousQuery.value = query
