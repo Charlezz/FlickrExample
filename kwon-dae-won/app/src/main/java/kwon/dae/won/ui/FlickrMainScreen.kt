@@ -28,12 +28,17 @@ import timber.log.Timber
 @Composable
 fun CurrentPhotoList(
     photos: LazyPagingItems<Photo>,
-    onLongClick: (Int) -> Unit,
+    onLongClick: (String) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(100.dp),
     ) {
-        items(photos.itemCount) { index ->
+        items(
+            count = photos.itemCount,
+            key = { index ->
+                photos[index]?.id!!
+            }
+        ) { index ->
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -67,7 +72,14 @@ fun CurrentPhotoList(
                                             .tag("사진")
                                             .d(photos[index]?.id)
                                     },
-                                    onLongClick = { onLongClick(index) }
+                                    onLongClick = {
+                                        onLongClick(
+                                            imageUrl(
+                                                photos[index]?.id,
+                                                photos[index]?.secret
+                                            )
+                                        )
+                                    }
                                 ),
                             painter = painter,
                             contentDescription = "Photo Image",
@@ -106,7 +118,11 @@ fun DefaultAlertDialog(
                     .wrapContentSize()
                     .fillMaxWidth()
             ) {
-                AsyncImage(modifier = Modifier.align(Alignment.Center),model = url, contentDescription = null)
+                AsyncImage(
+                    modifier = Modifier.align(Alignment.Center),
+                    model = url,
+                    contentDescription = null
+                )
             }
 
         },

@@ -24,31 +24,28 @@ fun FlickrApp(
 ) {
     val lazyPagingPhotos = viewModel.getRecentPhotos().collectAsLazyPagingItems()
     val photos by remember { mutableStateOf(lazyPagingPhotos) }
-    var openDialog by remember { mutableStateOf(false to -1) }
+    var openDialog by remember { mutableStateOf(false to "") }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        CurrentPhotoList(photos = photos, onLongClick = { index ->
-            openDialog = true to index
+        CurrentPhotoList(photos = photos, onLongClick = { url ->
+            openDialog = true to url
         })
     }
 
     if (openDialog.first) {
-        photos[openDialog.second]?.let { item ->
+        openDialog.second.let { url ->
             DefaultAlertDialog(
-                url = imageUrl(item.id, item.secret),
-                onDismissButtonClick = { openDialog = false to -1 },
+                url = url,
+                onDismissButtonClick = { openDialog = false to "" },
                 onConfirmButtonClick = {
-                    if (openDialog.second > 0) {
-                        photos[openDialog.second]?.let { item ->
-                            viewModel.downloadPhoto(
-                                item.title,
-                                item.owner,
-                                imageUrl(item.id, item.secret)
-                            )
-                        }
-                    }
-                    openDialog = false to -1
+                    // TODO 파일 이름 정하기
+                    viewModel.downloadPhoto(
+                        "",
+                        "",
+                        url
+                    )
+                    openDialog = false to ""
                 }
             )
         }
