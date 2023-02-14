@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":hello-compose-app:shared:domain"))
     implementation(project(":hello-compose-app:shared:data"))
     implementation(project(":hello-compose-app:shared:remote"))
+    implementation(project(":hello-compose-app:shared:local"))
     implementation(project(":hello-compose-app:presentation:main"))
 
     applyHilt()
@@ -64,6 +65,7 @@ dependencies {
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
     implementation(Dependencies.Io.Coil.COIL_COMPOSE)
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
     testImplementation(Dependencies.Junit.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Ext.JUNIT)
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)

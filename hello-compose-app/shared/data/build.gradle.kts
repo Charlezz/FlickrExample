@@ -41,5 +41,7 @@ android {
 
 dependencies {
     implementation(project(":hello-compose-app:shared:domain"))
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMMON_KTX)
+    implementation(Dependencies.AndroidX.Room.KTX)
     applyHilt()
 }

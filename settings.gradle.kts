@@ -6,6 +6,7 @@ include(
 
     ":hello-compose-app:shared:domain",
     ":hello-compose-app:shared:remote",
+    ":hello-compose-app:shared:local",
     ":hello-compose-app:shared:data",
     ":hello-compose-app:presentation:main",
     ":hello-compose-app:ui:system",

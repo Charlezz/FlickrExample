@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hello.com.pose.shared.domain.photo.FetchPhotoListUseCase
+import hello.com.pose.shared.domain.photo.GetPhotoPagingSourceUseCase
 import hello.com.pose.shared.domain.photo.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -17,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val fetchPhotoListUseCase: FetchPhotoListUseCase,
+    private val getPhotoPagingSourceUseCase: GetPhotoPagingSourceUseCase,
     private val downloader: Downloader
 ) : StateViewModel<MainState>() {
 
@@ -29,6 +32,9 @@ class MainViewModel @Inject constructor(
 
     private val currentSearchQuery = MutableStateFlow("")
     val searchQuery = currentSearchQuery.asStateFlow()
+
+    fun getPagingFlow(query: String) = getPhotoPagingSourceUseCase(query)
+        .cachedIn(viewModelScope)
 
     fun setNewQuery(query: String) {
         currentSearchQuery.value = query
