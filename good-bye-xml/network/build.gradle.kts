@@ -42,9 +42,15 @@ dependencies {
 
     implementation(Dependencies.SquareUp.Retrofit2.CORE)
     implementation(Dependencies.SquareUp.Retrofit2.MOSHI)
+
+    testImplementation(Dependencies.SquareUp.OkHttp3.MOCK_WEB_SERVER)
+    testImplementation(Dependencies.Junit.JUNIT)
+    testImplementation(Dependencies.Kotest.ASSERTION)
+
     applyMoshi()
     applyOkHttp3()
     applyHilt()
+    applyTest()
 }
 
 fun getApiKey(propertyKey: String): String {
