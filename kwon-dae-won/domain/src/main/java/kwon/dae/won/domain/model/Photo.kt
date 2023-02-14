@@ -9,4 +9,6 @@ data class Photo(
     val owner: String,
     val secret: String,
     val title: String,
+    val page: Int,
+    val maxPage: Int,
 )

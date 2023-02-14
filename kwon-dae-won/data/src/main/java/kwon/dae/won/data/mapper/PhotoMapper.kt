@@ -13,6 +13,8 @@ object PhotoMapper {
             owner = dto.owner,
             secret = dto.secret,
             title = dto.title,
+            page = dto.page,
+            maxPage = dto.maxPage,
         )
     }
 }
