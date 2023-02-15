@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface FlickerService {
-    @GET("?method=flickr.photos.search&format=json&nojsoncallback=1")
+    @GET("?method=flickr.photos.search&format=json&sort=relevance&media=photos&nojsoncallback=1")
     suspend fun getPhotos(
         @Query("api_key") apiKey: String,
         @Query("text") text: String,
