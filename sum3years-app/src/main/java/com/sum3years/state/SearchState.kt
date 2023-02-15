@@ -9,6 +9,7 @@ import com.sum3years.model.SearchDisplay
 class SearchState<T>(
     searchHistory: List<String>,
     searchResult: List<T>,
+    searchInProgress: Boolean,
 ) {
     var query by mutableStateOf(TextFieldValue())
     var focused by mutableStateOf(false)
@@ -16,7 +17,7 @@ class SearchState<T>(
     var searchResult by mutableStateOf(searchResult)
     var previousQueryText = ""
         private set
-    var searching by mutableStateOf(false)
+    var searching by mutableStateOf(searchInProgress)
     var searchInProgress = searching
 
     val searchDisplay: SearchDisplay

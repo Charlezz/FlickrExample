@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,10 +48,12 @@ fun MainScreen(
 
         val searchHistory = viewModel.searchHistory.collectAsStateWithLifecycle()
         val photoList = viewModel.photoList.collectAsStateWithLifecycle()
+        val searchInProgress = viewModel.searchInProgress.collectAsStateWithLifecycle()
 
         val state = rememberSearchState(
             searchHistory = searchHistory.value,
             searchResult = photoList.value,
+            searchInProgress = searchInProgress.value,
         )
 
         val dispatcher: OnBackPressedDispatcher =
@@ -86,7 +87,6 @@ fun MainScreen(
             query = state.query,
             onQueryChange = { state.query = it },
             onSearch = {
-                state.searchInProgress = true
                 viewModel.search(it)
                 focusManager.clearFocus()
             },
@@ -126,11 +126,11 @@ fun MainScreen(
             }
 
             SearchDisplay.SearchHistory -> {
+                state.searchInProgress = false
                 SearchHistory(
                     histories = state.searchHistory,
                     onHistoryClick = { history ->
-                        state.searchInProgress = true
-                        state.query = TextFieldValue(history, TextRange(history.length))
+                        state.query = TextFieldValue(history)
                         viewModel.search(state.query.text)
                         focusManager.clearFocus()
                     },
@@ -141,7 +141,6 @@ fun MainScreen(
             }
 
             SearchDisplay.Results -> {
-                state.searchInProgress = false
                 PhotoListContent(
                     modifier = modifier,
                     photoList = state.searchResult,

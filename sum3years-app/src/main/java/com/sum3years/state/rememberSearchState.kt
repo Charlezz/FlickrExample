@@ -7,11 +7,13 @@ import androidx.compose.runtime.remember
 fun <T> rememberSearchState(
     searchHistory: List<String> = emptyList(),
     searchResult: List<T> = emptyList(),
+    searchInProgress: Boolean = false,
 ): SearchState<T> {
     return remember {
         SearchState(
             searchHistory,
             searchResult,
+            searchInProgress,
         )
     }.also { state ->
         state.searchHistory = searchHistory

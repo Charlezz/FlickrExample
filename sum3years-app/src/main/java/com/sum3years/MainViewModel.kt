@@ -35,6 +35,9 @@ class MainViewModel @Inject constructor(
     private val _photoList = MutableStateFlow<List<PhotoUIModel>>(emptyList())
     val photoList = _photoList.asStateFlow()
 
+    private val _searchInProgress = MutableStateFlow(false)
+    val searchInProgress = _searchInProgress.asStateFlow()
+
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage = _errorMessage.asSharedFlow()
 
@@ -49,11 +52,12 @@ class MainViewModel @Inject constructor(
 
     fun search(query: String) {
         if (query.trim().isBlank()) return
+        _searchInProgress.value = true
         if (query != previousQuery.value) {
             resetResult()
             previousQuery.value = query
         }
-        viewModelScope.launch {
+        val searchJob = viewModelScope.launch {
             val response = repository.getPhotos(
                 query = query,
                 page = lastPage,
@@ -77,10 +81,17 @@ class MainViewModel @Inject constructor(
             } else {
                 response.exceptionOrNull()?.let { exception ->
                     (exception as? FlickerException)?.message?.let { errMsg ->
+                        Log.d("로그", "MainViewModel_search: Known Exception: $exception")
                         _errorMessage.emit(errMsg)
+                    } ?: run {
+                        Log.d("로그", "MainViewModel_search: Unknown Exception $exception")
+                        _errorMessage.emit(exception.message ?: "뭔 에러여")
                     }
                 }
             }
+        }
+        if (!searchJob.isActive) {
+            _searchInProgress.value = false
         }
         insertHistory(query)
     }
