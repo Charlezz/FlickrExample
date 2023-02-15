@@ -49,9 +49,11 @@ dependencies {
     androidTestImplementation(Dependencies.AndroidX.Test.Espresso.ESPRESSO_CORE)
 
     implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
+    testImplementation(Dependencies.Kotest.ASSERTION)
 
     applyRoom()
     applyOkHttp3()
     applyMoshi()
     applyHilt()
+    applyTest()
 }
