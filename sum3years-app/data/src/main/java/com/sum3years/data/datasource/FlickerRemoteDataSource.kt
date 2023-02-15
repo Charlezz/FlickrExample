@@ -22,7 +22,7 @@ class FlickerRemoteDataSource @Inject constructor(
         }.fold(
             onSuccess = {
                 Log.d("로그", "FlickerRemoteDataSource_getPhotos: success! $it")
-                if (it.body()?.code == 200) {
+                if (it.body()?.status == "ok") {
                     Result.success(it.body()?.photos?.photo ?: emptyList())
                 } else {
                     Result.failure(FlickerException.fromCode(it.body()?.code ?: -1))
