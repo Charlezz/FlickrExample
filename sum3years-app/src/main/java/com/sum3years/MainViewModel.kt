@@ -8,7 +8,6 @@ import com.sum3years.domain.repository.FlickerRepository
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.model.toUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,13 +41,6 @@ class MainViewModel @Inject constructor(
     val errorMessage = _errorMessage.asSharedFlow()
 
     private val previousQuery = MutableStateFlow("")
-
-    init {
-        viewModelScope.launch {
-            delay(3000)
-            _errorMessage.emit("TEST: 에러 발생!!") // TODO remove this
-        }
-    }
 
     fun search(query: String) {
         if (query.trim().isBlank()) return
