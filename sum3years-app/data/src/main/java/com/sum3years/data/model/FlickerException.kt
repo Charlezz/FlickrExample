@@ -24,6 +24,7 @@ sealed class FlickerException(override val message: String) : Exception(message)
     object InvalidXMLRPCMethodCall : FlickerException("Invalid XML-RPC Method Call")
     object BadURLFound : FlickerException("Bad URL found")
     object UnknownError : FlickerException("Unknown Error")
+    data class Exception(override val message: String) : FlickerException(message)
 
     companion object {
 

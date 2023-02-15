@@ -6,9 +6,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PhotoDto(
     @Json(name = "photos")
-    val photos: Photos = Photos(),
+    val photos: Photos? = null,
     @Json(name = "stat")
     val status: String = "",
+    @Json(name = "code")
+    val code: Int?,
+    @Json(name = "message")
+    val message: String?,
 )
 
 @JsonClass(generateAdapter = true)
