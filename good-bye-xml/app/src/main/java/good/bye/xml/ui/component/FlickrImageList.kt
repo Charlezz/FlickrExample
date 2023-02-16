@@ -13,17 +13,18 @@ import good.bye.xml.domain.model.photo.Photo
 fun FlickrImageList(
     images: LazyPagingItems<Photo>,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit) = {},
-    state: LazyGridState = rememberLazyGridState(),
+    onClick: ((String) -> Unit) = {},
+    state: LazyGridState = rememberLazyGridState()
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         state = state
     ) {
         items(images.itemCount) { index ->
+            val image = images[index]!!.formattedUrl
             FlickrImage(
                 imagePath = images[index]!!.formattedUrl,
-                onClick = onClick
+                onClick = { onClick(image) }
             )
         }
     }

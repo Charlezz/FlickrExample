@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class PhotoPagingSourceRecent @Inject constructor(
     private val dataSource: FlickrRemoteDataSource
-): PagingSource<Int, Photo>() {
+) : PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         return try {

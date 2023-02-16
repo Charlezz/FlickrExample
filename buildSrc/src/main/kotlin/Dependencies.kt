@@ -18,6 +18,9 @@ object Dependencies {
         const val MOCKITO_INLINE = "org.mockito:mockito-inline:$VERSION"
     }
 
+    object Kotest{
+        const val ASSERTION = "io.kotest:kotest-assertions-core:5.5.5"
+    }
     object Junit {
         const val VERSION = "4.13.2"
         const val JUNIT = "junit:junit:$VERSION"
@@ -228,6 +231,7 @@ object Dependencies {
             const val VERSION = "4.9.3"
             const val CORE = "com.squareup.okhttp3:okhttp:$VERSION"
             const val LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:$VERSION"
+            const val MOCK_WEB_SERVER = "com.squareup.okhttp3:mockwebserver:$VERSION"
         }
 
         object Retrofit2 {

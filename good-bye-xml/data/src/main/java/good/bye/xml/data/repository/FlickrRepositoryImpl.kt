@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class FlickrRepositoryImpl @Inject constructor(
     val remoteDataSource: FlickrRemoteDataSource
-): FlickrRepository {
+) : FlickrRepository {
 
     override suspend fun getPhotosForRecent(perPage: Int, page: Int): Flow<PagingData<Photo>> {
         return Pager(
@@ -39,11 +39,12 @@ class FlickrRepositoryImpl @Inject constructor(
      * - 0 이하 입력 시 입력값에 맞는 응답이 아니기에, 에러 반환으로 오류 파악이 나을 것 같아 처리
      * */
     private fun validationCheck(perPage: Int, page: Int) {
-        if (page <= 0)
+        if (page <= 0) {
             throw IllegalArgumentException("Smaller than the minimum")
+        }
 
-        if (perPage !in 1..500)
+        if (perPage !in 1..500) {
             throw IllegalArgumentException("Over the minimum or maximum range")
+        }
     }
-
 }

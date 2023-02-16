@@ -12,12 +12,17 @@ import java.io.IOException
 class PhotoPagingSourceSearch constructor(
     private val dataSource: FlickrRemoteDataSource,
     private val keyword: String
-): PagingSource<Int, Photo>() {
+) : PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         return try {
             val page = params.key ?: 1
-            val response = dataSource.getPhotosForSearch(keyword = keyword, perPage = params.loadSize, page = page)
+            val response =
+                if (keyword.isNotBlank()) dataSource.getPhotosForSearch(
+                    keyword = keyword,
+                    perPage = params.loadSize,
+                    page = page
+                ) else dataSource.getPhotosForRecent(perPage = params.loadSize, page = page)
 
             when (response) {
                 is NetworkResult.Success ->

@@ -81,4 +81,5 @@ dependencies {
     debugImplementation(Dependencies.AndroidX.Compose.UI.UI_TEST_MANIFEST)
 
     applyHilt()
+    applyTest()
 }
