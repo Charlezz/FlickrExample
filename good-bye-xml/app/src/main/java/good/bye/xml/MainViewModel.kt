@@ -18,8 +18,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getPhotoForRecentUseCase: GetPhotoForRecentUseCase,
-    private val getPhotoForSearchUseCase: GetPhotoForSearchUseCase,
-): ViewModel() {
+    private val getPhotoForSearchUseCase: GetPhotoForSearchUseCase
+) : ViewModel() {
 
     private val _searchKeyword = mutableStateOf("")
     val searchKeyword = _searchKeyword
@@ -28,26 +28,21 @@ class MainViewModel @Inject constructor(
     val searchedImages = _searchedImages
 
     init {
-        recent()
+        loadImages()
     }
 
     fun updateSearchKeyword(keyword: String) {
         _searchKeyword.value = keyword
     }
 
-    fun recent() {
-        viewModelScope.launch {
+    fun loadImages() = viewModelScope.launch {
+        val searchQuery = _searchKeyword.value
+        if (searchQuery.isBlank()) {
             getPhotoForRecentUseCase()
-                .cachedIn(viewModelScope)
-                .collect { _searchedImages.value = it }
-        }
-    }
-
-    fun search(keyword: String) {
-        viewModelScope.launch {
-            getPhotoForSearchUseCase(keyword)
-                .cachedIn(viewModelScope)
-                .collect { _searchedImages.value = it }
+        } else {
+            getPhotoForSearchUseCase(searchQuery)
+        }.cachedIn(viewModelScope).collect {
+            _searchedImages.value = it
         }
     }
 }
