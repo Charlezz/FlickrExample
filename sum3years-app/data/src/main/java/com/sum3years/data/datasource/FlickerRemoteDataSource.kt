@@ -5,6 +5,7 @@ import com.sum3years.data.BuildConfig
 import com.sum3years.data.model.FlickerException
 import com.sum3years.data.model.Photo
 import com.sum3years.data.network.FlickerService
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -33,6 +34,7 @@ class FlickerRemoteDataSource @Inject constructor(
                 val flickerException = when (exception) {
                     is FlickerException -> exception
                     is UnknownHostException -> FlickerException.Exception("인터넷 연결을 확인하세요")
+                    is SocketTimeoutException -> FlickerException.Exception("연결 시간이 초과되었습니다. 다시 시도해주세요")
                     else -> FlickerException.UnknownError
                 }
                 Result.failure(flickerException)
