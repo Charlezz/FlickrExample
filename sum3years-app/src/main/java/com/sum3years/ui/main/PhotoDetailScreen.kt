@@ -1,8 +1,10 @@
 package com.sum3years.ui.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,16 +35,15 @@ fun PhotoDetail(
     onDownloadClick: () -> Unit,
     onClose: () -> Unit,
 ) {
+    Log.d("로그", "_PhotoDetail: ratio: ${photo.ratio}")
     Column(
         modifier = modifier
-            .wrapContentHeight()
-            .padding(bottom = 30.dp),
+            .padding(bottom = 30.dp)
+            .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier = Modifier.aspectRatio(photo.ratio),
         ) {
             AsyncImage(
                 model = photo.loadUrlMedium,

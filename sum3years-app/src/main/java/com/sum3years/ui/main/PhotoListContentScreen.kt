@@ -2,6 +2,7 @@ package com.sum3years.ui.main
 
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -20,13 +21,14 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.sum3years.R
 import com.sum3years.model.PhotoUIModel
 
@@ -66,20 +68,28 @@ fun PhotoListContent(
                 },
             ) { index: Int, photo: PhotoUIModel ->
                 loadedItems = maxOf(loadedItems, index + 1)
+
+                val painter = rememberAsyncImagePainter(
+                    model = photo.loadUrlMedium,
+                    placeholder = painterResource(id = R.drawable.charlezzicon),
+                )
+                val imageRatio = remember(painter.state) {
+                    val imageSize = painter.intrinsicSize
+                    imageSize.width / imageSize.height
+                }
                 Box(
                     modifier = Modifier
                         .width(minSize)
                         .aspectRatio(1f)
                         .fillMaxSize(),
                 ) {
-                    AsyncImage(
-                        model = photo.loadUrlSmall,
+                    Image(
+                        painter = painter,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        placeholder = painterResource(id = R.drawable.charlezzicon),
                         modifier = Modifier
                             .fillMaxSize()
-                            .clickable { onClick(photo) },
+                            .clickable { onClick(photo.apply { ratio = imageRatio }) },
                     )
                 }
             }
