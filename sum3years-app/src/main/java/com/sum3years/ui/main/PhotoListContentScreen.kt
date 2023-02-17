@@ -70,7 +70,7 @@ fun PhotoListContent(
                 loadedItems = maxOf(loadedItems, index + 1)
 
                 val painter = rememberAsyncImagePainter(
-                    model = photo.loadUrlMedium,
+                    model = photo.loadUrlSmall,
                     placeholder = painterResource(id = R.drawable.charlezzicon),
                 )
                 val imageRatio = remember(painter.state) {
