@@ -114,6 +114,7 @@ object Dependencies {
             const val VERSION = "3.2.0-alpha01"
             const val PAGING_RUNTIME_KTX = "androidx.paging:paging-runtime-ktx:$VERSION"
             const val PAGING_COMMON = "androidx.paging:paging-common:$VERSION"
+            const val PAGING_COMMON_KTX = "androidx.paging:paging-common-ktx:$VERSION"
             const val PAGING_COMPOSE = "androidx.paging:paging-compose:1.0.0-alpha15"
         }
 
@@ -231,7 +232,7 @@ object Dependencies {
             const val COMPILER = "androidx.room:room-compiler:$VERSION"
             const val KTX = "androidx.room:room-ktx:$VERSION"
             const val ROOM_TESTING = "androidx.room:room-testing:$VERSION"
-            const val ROOM_PAGING = "androidx.room:room-paging:2.5.0-alpha03"
+            const val ROOM_PAGING = "androidx.room:room-paging:$VERSION"
         }
     }
 
