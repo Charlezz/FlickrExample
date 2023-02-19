@@ -1,11 +1,14 @@
 package kwon.dae.won.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,67 +31,85 @@ import kwon.dae.won.domain.model.Photo
 fun CurrentPhotoList(
     photos: LazyPagingItems<Photo>,
     onLongClick: (Int) -> Unit,
+    keyWord: String,
+    onValueChange: (String) -> Unit,
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(100.dp),
-    ) {
-        items(
-            count = photos.itemCount,
-            key = { index ->
-                photos[index]?.id!!
-            }
-        ) { index ->
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                photos[index]?.let { photo ->
-                    var isImageLoading by remember { mutableStateOf(false) }
 
-                    val painter = rememberAsyncImagePainter(
-                        model = loadImageData(
-                            LocalContext.current,
-                            photo.id,
-                            photo.secret
-                        )
-                    )
+    Column {
+        val scrollState = rememberLazyGridState()
+        val scrollingUp = scrollState.isScrollingUp()
 
-                    isImageLoading = when (painter.state) {
-                        is AsyncImagePainter.State.Loading -> true
-                        else -> false
-                    }
+        AnimatedVisibility(scrollingUp) {
+            SearchBar(
+                text = keyWord,
+                onValueChange = onValueChange,
+                onSearchClick = { }
+            )
+        }
 
-                    Box(
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .width(200.dp)
-                                .height(150.dp)
-                                .combinedClickable(
-                                    onClick = { },
-                                    onLongClick = {
-                                        onLongClick(index)
-                                    }
-                                ),
-                            painter = painter,
-                            contentDescription = "Photo Image",
-                            contentScale = ContentScale.Crop,
-                        )
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(100.dp),
+            state = scrollState,
+        ) {
+            items(
+                count = photos.itemCount,
+                key = { index ->
+                    photos[index]?.id!!
+                }
+            ) { index ->
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    photos[index]?.let { photo ->
+                        var isImageLoading by remember { mutableStateOf(false) }
 
-                        if (isImageLoading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .padding(horizontal = 6.dp, vertical = 3.dp),
-                                color = MaterialTheme.colorScheme.primary
+                        val painter = rememberAsyncImagePainter(
+                            model = loadImageData(
+                                LocalContext.current,
+                                photo.id,
+                                photo.secret
                             )
-                        }
-                    }
+                        )
 
+                        isImageLoading = when (painter.state) {
+                            is AsyncImagePainter.State.Loading -> true
+                            else -> false
+                        }
+
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .height(150.dp)
+                                    .combinedClickable(
+                                        onClick = { },
+                                        onLongClick = {
+                                            onLongClick(index)
+                                        }
+                                    ),
+                                painter = painter,
+                                contentDescription = "Photo Image",
+                                contentScale = ContentScale.Crop,
+                            )
+
+                            if (isImageLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .padding(horizontal = 6.dp, vertical = 3.dp),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+
+                    }
                 }
             }
         }
     }
+
 }
 
 @Composable
@@ -131,4 +152,22 @@ fun DefaultAlertDialog(
             }
         },
     )
+}
+
+@Composable
+private fun LazyGridState.isScrollingUp(): Boolean {
+    var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
+    var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
+    return remember(this) {
+        derivedStateOf {
+            if (previousIndex != firstVisibleItemIndex) {
+                previousIndex > firstVisibleItemIndex
+            } else {
+                previousScrollOffset >= firstVisibleItemScrollOffset
+            }.also {
+                previousIndex = firstVisibleItemIndex
+                previousScrollOffset = firstVisibleItemScrollOffset
+            }
+        }
+    }.value
 }

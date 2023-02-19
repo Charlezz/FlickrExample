@@ -30,8 +30,12 @@ class FlickrViewModel @Inject constructor(
     }
 
     private val _recentImage = MutableStateFlow<PagingData<Photo>>(PagingData.empty())
-    val recentImage : StateFlow<PagingData<Photo>>
+    val recentImage: StateFlow<PagingData<Photo>>
         get() = _recentImage.asStateFlow()
+
+    private val _searchKeyword = MutableStateFlow("")
+    val searchKeyword: StateFlow<String>
+        get() = _searchKeyword.asStateFlow()
 
     @OptIn(ExperimentalPagingApi::class)
     private fun getRecentPhotos() = viewModelScope.launch {
@@ -53,5 +57,10 @@ class FlickrViewModel @Inject constructor(
     // TODO : PhotoSize suffix 추가 by Daewon
     fun downloadPhoto(fileName: String, desc: String, url: String) =
         downloadUseCase(fileName, desc, url)
+
+
+    fun setKeyword(keyword: String) {
+        _searchKeyword.value = keyword
+    }
 
 }
