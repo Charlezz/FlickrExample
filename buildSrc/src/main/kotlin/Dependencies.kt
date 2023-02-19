@@ -140,6 +140,8 @@ object Dependencies {
             const val LIFECYCLE_VIEWMODEL_COMPOSE =
                 "androidx.lifecycle:lifecycle-viewmodel-compose:$VERSION"
             const val LIFECYCLE_RUNTIME_KTX = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+            const val LIFECYCLE_RUNTIME_COMPOSE =
+                "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
         }
 
         object ConstraintLayout {
