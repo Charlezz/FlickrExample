@@ -18,7 +18,6 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import kwon.dae.won.domain.model.Photo
-import timber.log.Timber
 
 /**
  * @author Daewon on 13,February,2023
@@ -28,7 +27,7 @@ import timber.log.Timber
 @Composable
 fun CurrentPhotoList(
     photos: LazyPagingItems<Photo>,
-    onLongClick: (String) -> Unit,
+    onLongClick: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(100.dp),
@@ -43,14 +42,14 @@ fun CurrentPhotoList(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (photos[index]?.id?.isNotBlank() == true) {
+                photos[index]?.let { photo ->
                     var isImageLoading by remember { mutableStateOf(false) }
 
                     val painter = rememberAsyncImagePainter(
                         model = loadImageData(
                             LocalContext.current,
-                            photos[index]?.id,
-                            photos[index]?.secret
+                            photo.id,
+                            photo.secret
                         )
                     )
 
@@ -67,23 +66,14 @@ fun CurrentPhotoList(
                                 .width(200.dp)
                                 .height(150.dp)
                                 .combinedClickable(
-                                    onClick = {
-                                        Timber
-                                            .tag("사진")
-                                            .d(photos[index]?.id)
-                                    },
+                                    onClick = { },
                                     onLongClick = {
-                                        onLongClick(
-                                            imageUrl(
-                                                photos[index]?.id,
-                                                photos[index]?.secret
-                                            )
-                                        )
+                                        onLongClick(index)
                                     }
                                 ),
                             painter = painter,
                             contentDescription = "Photo Image",
-                            contentScale = ContentScale.FillBounds,
+                            contentScale = ContentScale.Crop,
                         )
 
                         if (isImageLoading) {

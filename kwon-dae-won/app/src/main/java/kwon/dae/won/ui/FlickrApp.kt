@@ -1,16 +1,16 @@
 package kwon.dae.won.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.compose.AsyncImage
 import kwon.dae.won.FlickrViewModel
 
 
@@ -18,34 +18,41 @@ import kwon.dae.won.FlickrViewModel
  * @author Daewon on 10,February,2023
  *
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FlickrApp(
     viewModel: FlickrViewModel = viewModel(),
 ) {
-    val lazyPagingPhotos = viewModel.getRecentPhotos().collectAsLazyPagingItems()
+    val lazyPagingPhotos = viewModel.recentImage.collectAsLazyPagingItems()
     val photos by remember { mutableStateOf(lazyPagingPhotos) }
-    var openDialog by remember { mutableStateOf(false to "") }
+    var openDialog by remember { mutableStateOf(false to -1) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
 
-        CurrentPhotoList(photos = photos, onLongClick = { url ->
-            openDialog = true to url
-        })
+            CurrentPhotoList(photos = photos, onLongClick = { index ->
+                openDialog = true to index
+            })
+        }
+
     }
 
     if (openDialog.first) {
-        openDialog.second.let { url ->
+        photos[openDialog.second]?.let { photo ->
             DefaultAlertDialog(
-                url = url,
-                onDismissButtonClick = { openDialog = false to "" },
+                url = imageUrl(photo.id, photo.secret),
+                onDismissButtonClick = { openDialog = false to -1 },
                 onConfirmButtonClick = {
                     // TODO 파일 이름 정하기
                     viewModel.downloadPhoto(
-                        "",
-                        "",
-                        url
+                        photo.title.ifBlank { photo.id },
+                        photo.owner,
+                        imageUrl(photo.id, photo.secret)
                     )
-                    openDialog = false to ""
+                    openDialog = false to -1
                 }
             )
         }

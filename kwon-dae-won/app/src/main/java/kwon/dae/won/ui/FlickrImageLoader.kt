@@ -15,12 +15,12 @@ import kwon.dae.won.data.BuildConfig
  * diskCachePolicy - ENABLED,
  * networkCachePolicy - ENABLED,
  */
-fun loadImageData(context: Context, id: String?, secret: String?): ImageRequest = ImageRequest
+fun loadImageData(context: Context, id: String, secret: String): ImageRequest = ImageRequest
     .Builder(context)
     .data(imageUrl(id, secret))
     .crossfade(true)
     .size(Size.ORIGINAL)
     .build()
 
-fun imageUrl(id: String?, secret: String?): String = "https://live.staticflickr.com/${BuildConfig.SERVER_ID}/${id}_${secret}.jpg"
+fun imageUrl(id: String, secret: String): String = "https://live.staticflickr.com/${BuildConfig.SERVER_ID}/${id}_${secret}.jpg"
 
