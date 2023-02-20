@@ -67,4 +67,5 @@ dependencies {
 
     applyHilt()
     applyRoom()
+    applyTest()
 }
