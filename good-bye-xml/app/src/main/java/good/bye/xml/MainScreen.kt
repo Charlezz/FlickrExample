@@ -45,11 +45,6 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        lazyGridState.animateScrollToItem(0)
-    }
-
-    //
 
     // 스크롤 중이면서, TextField가 포커스를 갖고 있다면 focus clear
     if (lazyGridState.isScrollInProgress && hasTextFieldFocus) {

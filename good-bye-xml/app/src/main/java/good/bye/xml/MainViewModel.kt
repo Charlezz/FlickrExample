@@ -17,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
+    //굳이 비즈니스 로직(페이징데이터를 가져오는 공통 로직)을 두개로 나누는것보단 하나로 통합하는게 깔끔할것같음.
     private val getPhotoForRecentUseCase: GetPhotoForRecentUseCase,
     private val getPhotoForSearchUseCase: GetPhotoForSearchUseCase
 ) : ViewModel() {
