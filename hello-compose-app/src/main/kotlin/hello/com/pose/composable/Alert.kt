@@ -28,7 +28,7 @@ fun Alert(
     viewModel: MainViewModel = viewModel()
 ) {
     if (showDialog) {
-        val state by viewModel.stateFlow.collectAsState()
+        val state by viewModel.downloadStateFlow.collectAsState()
 
         AlertDialog(
             containerColor = Color.White,
@@ -50,7 +50,7 @@ fun Alert(
                         strokeWidth = 6.dp
                     )
                 }
-                if(state.isCompleted) {
+                if (state.isCompleted) {
                     state.isCompleted = false
                     onDismiss.invoke()
                 }

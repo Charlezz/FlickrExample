@@ -2,8 +2,13 @@ package hello.com.pose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,9 +53,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 text = currentSearchQuery,
                 inputChange = {
                     viewModel.setNewQuery(it)
-                }
-            )
-            PhotoList(pagingItems)
+                })
+            SearchList(viewModel.photoList, lazyGridState)
             LaunchedEffect(key1 = currentSearchQuery) {
                 if (viewModel.prevQuery != currentSearchQuery) {
                     coroutineScope.launch {
@@ -100,13 +104,18 @@ private fun LazyGridScope.loadingItem() {
 }
 
 @Composable
-fun SearchList(viewModel: MainViewModel, gridState: LazyGridState) {
+fun SearchList(
+    photos: MutableList<Photo>,
+    gridState: LazyGridState
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
-        state = gridState
+        state = gridState,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(viewModel.photoList) { photo ->
-            MainContentItem(photo = photo)
+        items(photos) { photo ->
+            PhotoScreen(photo)
         }
     }
 }
