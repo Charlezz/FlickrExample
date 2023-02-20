@@ -85,7 +85,7 @@ fun PhotoList(pagingItems: LazyPagingItems<Photo>) {
 
 private fun LazyGridScope.loadingItem() {
     item(
-        span = { GridItemSpan(2) }
+        span = { GridItemSpan(4) }
     ) {
         Box(
             modifier = Modifier
