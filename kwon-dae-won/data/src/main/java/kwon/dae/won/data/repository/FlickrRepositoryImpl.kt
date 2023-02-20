@@ -37,7 +37,7 @@ class FlickrRepositoryImpl @Inject constructor(
         return when (val response = service.search(text, perPage, page)) {
             is FlickrResponse.Success -> Result.success(response.value?.photo?.map { dto ->
                 PhotoMapper.from(
-                    dto
+                    dto.copy(page = response.value.page, maxPage = response.value.pages)
                 )
             } ?: emptyList())
             is FlickrResponse.Failure -> Result.failure(IllegalStateException("code = ${response.code}, error = ${response.message}"))

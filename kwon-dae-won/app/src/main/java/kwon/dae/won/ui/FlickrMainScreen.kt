@@ -33,17 +33,19 @@ fun CurrentPhotoList(
     onLongClick: (Int) -> Unit,
     keyWord: String,
     onValueChange: (String) -> Unit,
+    onSearchClick: () -> Unit,
+    onCancelClick: () -> Unit,
 ) {
+    val scrollState = rememberLazyGridState()
+    val scrollingUp = scrollState.isScrollingUp()
 
     Column {
-        val scrollState = rememberLazyGridState()
-        val scrollingUp = scrollState.isScrollingUp()
-
         AnimatedVisibility(scrollingUp) {
             SearchBar(
                 text = keyWord,
                 onValueChange = onValueChange,
-                onSearchClick = { }
+                onSearchClick = onSearchClick,
+                onCancelClick = onCancelClick
             )
         }
 
@@ -53,9 +55,6 @@ fun CurrentPhotoList(
         ) {
             items(
                 count = photos.itemCount,
-                key = { index ->
-                    photos[index]?.id!!
-                }
             ) { index ->
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -108,6 +107,10 @@ fun CurrentPhotoList(
                 }
             }
         }
+    }
+
+    LaunchedEffect(keyWord) {
+        scrollState.animateScrollToItem(0)
     }
 
 }

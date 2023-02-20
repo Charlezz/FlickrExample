@@ -1,6 +1,5 @@
 package kwon.dae.won.ui
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -44,6 +43,12 @@ fun FlickrApp(
                 keyWord = keyWord,
                 onValueChange = {
                     viewModel.setKeyword(it)
+                },
+                onSearchClick = {
+                    viewModel.searchKeyWordPhotos(keyWord)
+                },
+                onCancelClick = {
+                    viewModel.resetKeyword()
                 }
             )
         }
@@ -55,7 +60,6 @@ fun FlickrApp(
                 url = imageUrl(photo.id, photo.secret),
                 onDismissButtonClick = { openDialog = false to -1 },
                 onConfirmButtonClick = {
-                    // TODO 파일 이름 정하기
                     viewModel.downloadPhoto(
                         photo.title.ifBlank { photo.id },
                         photo.owner,
@@ -66,4 +70,11 @@ fun FlickrApp(
             )
         }
     }
+
+    LaunchedEffect(Unit) {
+        viewModel.suggestQuery.collect {
+            viewModel.searchKeyWordPhotos(it)
+        }
+    }
+
 }

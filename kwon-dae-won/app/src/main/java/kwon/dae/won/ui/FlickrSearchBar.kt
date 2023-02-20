@@ -30,10 +30,11 @@ fun SearchBar(
     text: String,
     onValueChange: (String) -> Unit,
     onSearchClick: () -> Unit,
+    onCancelClick: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val trailingIconView = @Composable {
+    val leadingIcon = @Composable {
         IconButton(
             onClick = {
                 onSearchClick()
@@ -42,6 +43,18 @@ fun SearchBar(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.baseline_search_24),
+                contentDescription = null
+            )
+        }
+    }
+    val trailingIconView = @Composable {
+        IconButton(
+            onClick = {
+                onCancelClick()
+            },
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_cancel_24),
                 contentDescription = null
             )
         }
@@ -55,6 +68,7 @@ fun SearchBar(
             value = text,
             onValueChange = { onValueChange(it) },
             singleLine = true,
+            leadingIcon = if (text.isNotBlank()) leadingIcon else null,
             trailingIcon = if (text.isNotBlank()) trailingIconView else null,
             placeholder = {
                 Text(text = "검색어를 입력하세요(예: 사진)", color = Color.Gray)
