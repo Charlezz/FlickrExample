@@ -110,7 +110,7 @@ fun CurrentPhotoList(
                                 )
                             }
                         }
-                    } ?: PlaceHodlerItem()
+                    } ?: PlaceHolderItem()
                 }
             }
         }
@@ -165,7 +165,7 @@ fun DefaultAlertDialog(
 }
 
 @Composable
-fun PlaceHodlerItem() {
+fun PlaceHolderItem() {
     Image(
         imageVector = ImageVector.vectorResource(id = R.drawable.charlezz),
         contentDescription = null
