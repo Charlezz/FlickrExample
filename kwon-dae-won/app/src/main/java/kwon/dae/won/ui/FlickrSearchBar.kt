@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import kwon.dae.won.R
 
 /**
@@ -85,4 +86,15 @@ fun SearchBar(
             )
         )
     }
+}
+
+@Preview(name = "SearchBar")
+@Composable
+fun PreviewSearchBar() {
+    SearchBar(
+        text = "Preview",
+        onValueChange = { },
+        onSearchClick = { },
+        onCancelClick = { },
+    )
 }

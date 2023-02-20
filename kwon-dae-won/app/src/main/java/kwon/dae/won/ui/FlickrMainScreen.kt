@@ -13,14 +13,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import kotlinx.coroutines.flow.flowOf
+import kwon.dae.won.R
 import kwon.dae.won.domain.model.Photo
+import kwon.dae.won.domain.model.fake
 
 /**
  * @author Daewon on 13,February,2023
@@ -102,8 +110,7 @@ fun CurrentPhotoList(
                                 )
                             }
                         }
-
-                    }
+                    } ?: PlaceHodlerItem()
                 }
             }
         }
@@ -158,6 +165,14 @@ fun DefaultAlertDialog(
 }
 
 @Composable
+fun PlaceHodlerItem() {
+    Image(
+        imageVector = ImageVector.vectorResource(id = R.drawable.charlezz),
+        contentDescription = null
+    )
+}
+
+@Composable
 private fun LazyGridState.isScrollingUp(): Boolean {
     var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
     var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
@@ -174,3 +189,27 @@ private fun LazyGridState.isScrollingUp(): Boolean {
         }
     }.value
 }
+
+@Preview(name = "PhotoList", showSystemUi = true)
+@Composable
+fun PreviewCurrentPhotoList() {
+    CurrentPhotoList(
+        photos = flowOf(PagingData.from(Photo.fake())).collectAsLazyPagingItems(),
+        onLongClick = { },
+        keyWord = "Charlezz",
+        onValueChange = { },
+        onSearchClick = { },
+        onCancelClick = { }
+    )
+}
+
+@Preview(name = "DownLoadDialog", widthDp = 300, heightDp = 300)
+@Composable
+fun PreviewDefaultDialog() {
+    DefaultAlertDialog(
+        url = "",
+        onConfirmButtonClick = { },
+        onDismissButtonClick = { }
+    )
+}
+
