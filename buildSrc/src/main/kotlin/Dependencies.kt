@@ -115,7 +115,7 @@ object Dependencies {
             const val PAGING_RUNTIME_KTX = "androidx.paging:paging-runtime-ktx:$VERSION"
             const val PAGING_COMMON = "androidx.paging:paging-common:$VERSION"
             const val PAGING_COMMON_KTX = "androidx.paging:paging-common-ktx:$VERSION"
-            const val PAGING_COMPOSE = "androidx.paging:paging-compose:1.0.0-alpha15"
+            const val PAGING_COMPOSE = "androidx.paging:paging-compose:1.0.0-alpha17"
         }
 
         object Activity {
@@ -275,7 +275,7 @@ object Dependencies {
     object Io {
         object Coil {
             // https://coil-kt.github.io/coil/getting_started/#artifacts
-            const val VERSION = "2.1.0"
+            const val VERSION = "2.2.2"
             const val COIL = "io.coil-kt:coil:$VERSION"
             const val COIL_BASE = "io.coil-kt:coil-base:$VERSION"
             const val COIL_COMPOSE = "io.coil-kt:coil-compose:$VERSION"

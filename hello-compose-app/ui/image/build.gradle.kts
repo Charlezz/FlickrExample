@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "hello.com.pose.presentation.main"
+    namespace = "hello.com.pose.ui.image"
     compileSdk = 33
 
     defaultConfig {
@@ -40,10 +40,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":hello-compose-app:ui:image"))
-    implementation(project(":hello-compose-app:shared:domain"))
-    implementation(Dependencies.AndroidX.Compose.UI.UI)
-    implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
-    implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
-    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
+    implementation(Dependencies.Io.Coil.COIL_COMPOSE)
 }
