@@ -147,7 +147,7 @@ fun MainContentItem(photo: Photo) {
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(),
+                .fillMaxHeight()
         )
     }
 }
