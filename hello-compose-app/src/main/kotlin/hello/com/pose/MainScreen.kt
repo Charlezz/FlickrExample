@@ -48,7 +48,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 text = currentSearchQuery,
                 inputChange = {
                     viewModel.setNewQuery(it)
-                },
+                }
             )
             PhotoList(pagingItems)
             LaunchedEffect(key1 = currentSearchQuery) {
@@ -68,7 +68,7 @@ fun PhotoList(pagingItems: LazyPagingItems<Photo>) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
-        state = scrollState,
+        state = scrollState
     ) {
         items(pagingItems.itemCount) { index ->
             pagingItems[index]?.let { photo ->
@@ -85,7 +85,7 @@ fun PhotoList(pagingItems: LazyPagingItems<Photo>) {
 
 private fun LazyGridScope.loadingItem() {
     item(
-        span = { GridItemSpan(2) },
+        span = { GridItemSpan(2) }
     ) {
         Box(
             modifier = Modifier
@@ -103,7 +103,7 @@ private fun LazyGridScope.loadingItem() {
 fun SearchList(viewModel: MainViewModel, gridState: LazyGridState) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
-        state = gridState,
+        state = gridState
     ) {
         items(viewModel.photoList) { photo ->
             MainContentItem(photo = photo)
@@ -123,7 +123,7 @@ fun MainContentItem(photo: Photo) {
         Alert(
             showDialog = showDownloadDialog.value,
             onDismiss = { showDownloadDialog.value = false },
-            photo,
+            photo
         )
     }
 
@@ -141,7 +141,7 @@ fun MainContentItem(photo: Photo) {
                 model = photo.getStaticImageUrl(),
                 imageLoader = ImageLoader.Builder(context = LocalContext.current)
                     .crossfade(true)
-                    .build(),
+                    .build()
             ),
             contentScale = ContentScale.Crop,
             contentDescription = null,
