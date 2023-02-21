@@ -17,6 +17,8 @@ data class PhotoUIModel(
         get() = "https://live.staticflickr.com/$server/${id}_${secret}_o.jpg"
     val photoId: String
         get() = "$owner/$id"
+    val fileName: String
+        get() = "${id}_$secret.jpg"
 
     var ratio: Float = 1f
 }

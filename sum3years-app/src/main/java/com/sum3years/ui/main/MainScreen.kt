@@ -1,38 +1,42 @@
 package com.sum3years.ui.main
 
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.sum3years.MainViewModel
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.model.SearchDisplay
 import com.sum3years.state.rememberSearchState
+import java.io.File
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @Composable
@@ -49,6 +53,7 @@ fun MainScreen(
         val searchHistory = viewModel.searchHistory.collectAsStateWithLifecycle()
         val photoList = viewModel.photoList.collectAsStateWithLifecycle()
         val searchInProgress = viewModel.searchInProgress.collectAsStateWithLifecycle()
+        val downloadedPhotos = viewModel.downloadedPhotos.collectAsStateWithLifecycle()
 
         val state = rememberSearchState(
             searchHistory = searchHistory.value,
@@ -106,11 +111,15 @@ fun MainScreen(
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(
-                        "다운로드 된 사진이 없습니다!",
-                        fontSize = 24.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
+                    if (downloadedPhotos.value.isEmpty()) {
+                        Text(
+                            "다운로드 된 사진이 없습니다!",
+                            fontSize = 24.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    } else {
+                        DownloadedPhotosScreen(downloadedPhotos)
+                    }
                 }
             }
 
@@ -159,6 +168,24 @@ fun MainScreen(
                     CircularProgressIndicator()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DownloadedPhotosScreen(downloadedPhotos: State<List<String>>) {
+    Column(Modifier.verticalScroll(rememberScrollState())) {
+        downloadedPhotos.value.forEach {
+            AsyncImage(
+                model = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),it),
+                contentDescription = "Photo detail",
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Text(text = it, modifier = Modifier
+                .background(Color.Black)
+                .fillMaxWidth(), color = Color.White, textAlign = TextAlign.End)
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }

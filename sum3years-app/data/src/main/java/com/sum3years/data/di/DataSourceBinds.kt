@@ -1,9 +1,6 @@
 package com.sum3years.data.di
 
-import com.sum3years.data.datasource.FlickerDataSource
-import com.sum3years.data.datasource.FlickerRemoteDataSource
-import com.sum3years.data.datasource.SearchHistoryDataSource
-import com.sum3years.data.datasource.SearchHistoryDataSourceImpl
+import com.sum3years.data.datasource.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +18,9 @@ abstract class DataSourceBinds {
     abstract fun bindSearchHistoryDataSource(
         dataSource: SearchHistoryDataSourceImpl,
     ): SearchHistoryDataSource
+
+    @Binds
+    abstract fun bindDownloadedDataSource(
+        dataSource: DownloadedPhotoDataSourceImpl
+    ): DownloadedPhotoDataSource
 }

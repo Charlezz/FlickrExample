@@ -1,6 +1,10 @@
 package com.sum3years
 
+import android.app.DownloadManager
+import android.content.Context
+import android.os.Environment
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sum3years.data.model.FlickerException
@@ -8,6 +12,8 @@ import com.sum3years.domain.repository.FlickerRepository
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.model.toUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,6 +21,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +30,12 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val searchHistory = repository.loadSearchHistories().stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        emptyList(),
+    )
+
+    val downloadedPhotos = repository.loadDownloadedPhotos().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         emptyList(),
@@ -104,6 +117,27 @@ class MainViewModel @Inject constructor(
         _photoList.value = emptyList()
         lastPage = 1
         loadFinished = false
+    }
+
+    fun downloadFile(url: String, fileName: String, context: Context): Long {
+        val downloadManager = context.getSystemService(DownloadManager::class.java)
+
+//        val file = File(context.filesDir, fileName)
+//        val fileUri = file.toUri()
+
+        val request = DownloadManager.Request(url.toUri())
+            .setMimeType("image/jpeg")
+            .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setTitle(fileName)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+//            .setDestinationUri(fileUri)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.insertDownloadedPhoto(fileName)
+        }
+
+        return downloadManager.enqueue(request)
     }
 
     companion object {

@@ -1,6 +1,8 @@
 package com.sum3years.data.datasource
 
+import com.sum3years.data.database.dao.DownloadedPhotoDao
 import com.sum3years.data.database.dao.SearchHistoryDao
+import com.sum3years.data.model.DownloadedPhotoEntity
 import com.sum3years.data.model.SearchHistoryEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

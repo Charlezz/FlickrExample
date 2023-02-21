@@ -1,8 +1,10 @@
 package com.sum3years
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
@@ -65,7 +67,9 @@ class MainActivity : ComponentActivity() {
             showPhotoDetail?.let { photo ->
                 Dialog(onDismissRequest = { showPhotoDetail = null }) {
                     Surface(
-                        modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                         shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.background,
                     ) {
@@ -73,12 +77,13 @@ class MainActivity : ComponentActivity() {
                             photo = photo,
                             onClose = { showPhotoDetail = null },
                             onDownloadClick = {
-                                // TODO Download Image
+                                viewModel.downloadFile(url = photo.loadUrlMedium, fileName = photo.fileName, this)
                                 Toast.makeText(
                                     this,
-                                    "Download ${photo.loadUrlOriginal}",
+                                    "Download ${photo.loadUrlMedium}",
                                     Toast.LENGTH_SHORT,
                                 ).show()
+//                                Log.e("download", "url: ${photo.loadUrlMedium}")
                             },
                         )
                     }
