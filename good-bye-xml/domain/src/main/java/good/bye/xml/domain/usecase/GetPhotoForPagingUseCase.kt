@@ -7,10 +7,10 @@ import good.bye.xml.domain.repository.FlickrRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPhotoForRecentUseCase @Inject constructor(
+class GetPhotoForPagingUseCase @Inject constructor(
     private val repository: FlickrRepository
 ) {
-    suspend operator fun invoke(perPage: Int = 50, page: Int = 1): Flow<PagingData<Photo>> {
-        return repository.getPhotosForRecent(perPage, page)
+    suspend operator fun invoke(keyword: String?, perPage: Int = 50): Flow<PagingData<Photo>> {
+        return repository.loadPhotosForPaging(keyword = keyword, perPage = perPage)
     }
 }

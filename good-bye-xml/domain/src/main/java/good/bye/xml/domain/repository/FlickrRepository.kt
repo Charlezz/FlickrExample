@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface FlickrRepository {
 
+    suspend fun loadPhotosForPaging(keyword: String?, perPage: Int): Flow<PagingData<Photo>>
+
     suspend fun getPhotosForRecent(perPage: Int, page: Int): Flow<PagingData<Photo>>
+
     suspend fun getPhotosForSearch(keyword: String, perPage: Int, page: Int): Flow<PagingData<Photo>>
 }

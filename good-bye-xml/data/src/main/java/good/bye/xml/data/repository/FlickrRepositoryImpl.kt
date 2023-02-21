@@ -1,31 +1,46 @@
 package good.bye.xml.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import good.bye.xml.data.pagingsource.PhotoPagingSourceRecent
-import good.bye.xml.data.pagingsource.PhotoPagingSourceSearch
+import androidx.paging.*
 import com.example.network.datasource.FlickrRemoteDataSource
+import good.bye.xml.data.mapper.toDomain
+import good.bye.xml.data.paging.mediator.PhotoRemoteMediator
+import good.bye.xml.data.paging.source.PhotoPagingSourceRecent
+import good.bye.xml.data.paging.source.PhotoPagingSourceSearch
 import good.bye.xml.domain.model.photo.Photo
 import good.bye.xml.domain.repository.FlickrRepository
+import good.bye.xml.local.room.datasource.FlickrLocalDataSource
+import good.bye.xml.local.room.model.PhotoEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FlickrRepositoryImpl @Inject constructor(
-    val remoteDataSource: FlickrRemoteDataSource
+    val remote: FlickrRemoteDataSource,
+    val local: FlickrLocalDataSource
 ) : FlickrRepository {
+
+    @OptIn(ExperimentalPagingApi::class)
+    override suspend fun loadPhotosForPaging(keyword: String?, perPage: Int): Flow<PagingData<Photo>> {
+        return Pager(
+            config = PagingConfig(pageSize = perPage),
+            remoteMediator = PhotoRemoteMediator(keyword = keyword, remote = remote, local = local),
+            pagingSourceFactory = { local.getPhotoPagingSource() }
+        )
+            .flow
+            .map { it.map(PhotoEntity::toDomain) }
+    }
 
     override suspend fun getPhotosForRecent(perPage: Int, page: Int): Flow<PagingData<Photo>> {
         return Pager(
             config = PagingConfig(pageSize = perPage),
-            pagingSourceFactory = { PhotoPagingSourceRecent(remoteDataSource) }
+            pagingSourceFactory = { PhotoPagingSourceRecent(remote) }
         ).flow
     }
 
     override suspend fun getPhotosForSearch(keyword: String, perPage: Int, page: Int): Flow<PagingData<Photo>> {
         return Pager(
             config = PagingConfig(pageSize = perPage),
-            pagingSourceFactory = { PhotoPagingSourceSearch(dataSource = remoteDataSource, keyword = keyword) }
+            pagingSourceFactory = { PhotoPagingSourceSearch(dataSource = remote, keyword = keyword) }
         ).flow
     }
 
