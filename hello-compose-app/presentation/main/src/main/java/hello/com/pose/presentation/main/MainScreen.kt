@@ -44,7 +44,6 @@ internal fun MainScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
     ) {
         PhotoList(
             pagingItems = pagingItems,
