@@ -16,7 +16,7 @@ fun Photo(
     AsyncImage(
         model = photo.getStaticImageUrl(),
         modifier = Modifier
-            .aspectRatio(1.0f)
+            .aspectRatio(1f)
             .clickable { onClickPhoto(photo) },
         contentScale = ContentScale.Crop,
     )
