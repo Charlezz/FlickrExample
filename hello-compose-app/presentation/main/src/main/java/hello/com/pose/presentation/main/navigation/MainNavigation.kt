@@ -15,8 +15,8 @@ fun NavGraphBuilder.mainScreen(
 ) {
     composable(route = mainNavigationRoute) {
         MainRoute(
-            onNavigateDetail = onNavigateDetail,
-            onNavigateSetting = onNavigateSetting
+            navigateDetail = onNavigateDetail,
+            navigateSetting = onNavigateSetting,
         )
     }
 }

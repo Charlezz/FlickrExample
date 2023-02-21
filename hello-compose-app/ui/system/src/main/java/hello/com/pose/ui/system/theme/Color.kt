@@ -1,4 +1,4 @@
-package hello.com.pose.ui.system
+package hello.com.pose.ui.system.theme
 
 import androidx.compose.ui.graphics.Color
 

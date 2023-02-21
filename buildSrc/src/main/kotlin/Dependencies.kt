@@ -176,7 +176,7 @@ object Dependencies {
             }
 
             object Material3 {
-                const val VERSION = "1.0.0-alpha13"
+                const val VERSION = "1.1.0-alpha03"
                 const val MATERIAL3 = "androidx.compose.material3:material3:$VERSION"
                 const val MATERIAL3_WINDOW_SIZE_CLASS =
                     "androidx.compose.material3:material3-window-size-class:$VERSION"

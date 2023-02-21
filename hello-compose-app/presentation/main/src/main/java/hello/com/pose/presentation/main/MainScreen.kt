@@ -23,21 +23,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import hello.com.pose.shared.domain.photo.Photo
-import hello.com.pose.ui.system.SearchBar
+import hello.com.pose.ui.system.component.IconSetting
+import hello.com.pose.ui.system.component.SearchBar
 import androidx.paging.compose.collectAsLazyPagingItems as collectAsLazyPagingItems1
 
 @Composable
 internal fun MainRoute(
-    onNavigateDetail: (Photo) -> Unit,
-    onNavigateSetting: () -> Unit,
+    navigateDetail: (Photo) -> Unit,
+    navigateSetting: () -> Unit,
     mainViewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val state = mainViewModel.stateFlow.collectAsState().value
 
     MainScreen(
-        onNavigateDetail = onNavigateDetail,
-        onNavigateSetting = onNavigateSetting,
+        onClickPhoto = navigateDetail,
         onSearch = { mainViewModel.eventHandler(MainContract.Event.DoSearchPhoto(it)) },
+        onClickSetting = navigateSetting,
         state = state
     )
 }
@@ -45,9 +46,9 @@ internal fun MainRoute(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun MainScreen(
-    onNavigateDetail: (Photo) -> Unit,
-    onNavigateSetting: () -> Unit,
+    onClickPhoto: (Photo) -> Unit,
     onSearch: (String) -> Unit,
+    onClickSetting: () -> Unit,
     state: MainContract.State
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -58,11 +59,12 @@ internal fun MainScreen(
     ) {
         PhotoList(
             state = state.photoListState,
-            onClickPhoto = onNavigateDetail,
+            onClickPhoto = onClickPhoto,
             onSearch = {
                 onSearch(it)
                 keyboardController?.hide()
-            }
+            },
+            onClickSetting = onClickSetting
         )
     }
 }
@@ -72,6 +74,7 @@ fun PhotoList(
     state: MainContract.State.PhotoListState,
     onClickPhoto: (Photo) -> Unit,
     onSearch: (String) -> Unit,
+    onClickSetting: () -> Unit
 ) {
     val scrollState = rememberLazyGridState()
 
@@ -87,7 +90,7 @@ fun PhotoList(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        searchBar(onSearch)
+        searchBar(onSearch, onClickSetting)
         pagingItems?.let { pagingItems ->
             items(
                 count = pagingItems.itemCount
@@ -105,13 +108,15 @@ fun PhotoList(
     }
 }
 
-private fun LazyPagingItems<Photo>.key(index: Int): Any {
-    return get(index)?.id ?: index
-}
-
-private fun LazyGridScope.searchBar(onSearch: (String) -> Unit) {
+private fun LazyGridScope.searchBar(
+    onSearch: (String) -> Unit,
+    onClickSetting: () -> Unit
+) {
     item(span = { GridItemSpan(PhotoCellCount) }) {
-        SearchBar(onSearch)
+        SearchBar(
+            onSearch = onSearch,
+            trailingIcon = { IconSetting(onClickSetting) }
+        )
     }
 }
 private fun LazyGridScope.loadingItem() {

@@ -11,6 +11,7 @@ include(
     ":hello-compose-app:shared:core-mvi",
     ":hello-compose-app:presentation:main",
     ":hello-compose-app:presentation:detail",
+    ":hello-compose-app:presentation:setting",
     ":hello-compose-app:ui:system",
     ":hello-compose-app:ui:image",
 

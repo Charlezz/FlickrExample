@@ -9,6 +9,8 @@ import hello.com.pose.presentation.detail.navigation.detailScreen
 import hello.com.pose.presentation.detail.navigation.navigateDetail
 import hello.com.pose.presentation.main.navigation.mainNavigationRoute
 import hello.com.pose.presentation.main.navigation.mainScreen
+import hello.com.pose.presentation.setting.navigation.navigateSetting
+import hello.com.pose.presentation.setting.navigation.settingScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -25,9 +27,12 @@ fun AppNavHost(
     ) {
         mainScreen(
             onNavigateDetail = { photo -> navController.navigateDetail(photo.getStaticImageUrl(), photo.title) },
-            onNavigateSetting = {  }
+            onNavigateSetting = { navController.navigateSetting() }
         )
         detailScreen(
+            onNavigateBack = navController::popBackStack,
+        )
+        settingScreen(
             onNavigateBack = navController::popBackStack,
         )
     }
