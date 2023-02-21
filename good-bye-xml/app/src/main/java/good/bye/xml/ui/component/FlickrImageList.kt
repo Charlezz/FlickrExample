@@ -6,25 +6,30 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.paging.compose.LazyPagingItems
+import coil.compose.AsyncImagePainter
 import good.bye.xml.domain.model.photo.Photo
 
 @Composable
 fun FlickrImageList(
     images: LazyPagingItems<Photo>,
     modifier: Modifier = Modifier,
-    onClick: ((String) -> Unit) = {},
+    onClick: ((AsyncImagePainter, LayoutCoordinates) -> Unit) = { _, _ -> },
     state: LazyGridState = rememberLazyGridState()
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         state = state
+
     ) {
         items(images.itemCount) { index ->
             val image = images[index]!!.formattedUrl
             FlickrImage(
                 imagePath = images[index]!!.formattedUrl,
-                onClick = { onClick(image) }
+                onClick = { layoutCoordinates, asyncImagePainter ->
+                    onClick(asyncImagePainter, layoutCoordinates)
+                }
             )
         }
     }

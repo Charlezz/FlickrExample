@@ -3,33 +3,29 @@ package good.bye.xml.ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-import coil.size.Size
 import good.bye.xml.ui.theme.GoodByeXmlTheme
 
 @Composable
 fun FlickrImage(
     imagePath: String,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit) = {},
+    onClick: ((LayoutCoordinates, AsyncImagePainter) -> Unit) = { layoutCoordinates: LayoutCoordinates, asyncImagePainter: AsyncImagePainter -> }
 ) {
-
+    lateinit var layoutCoordinate: LayoutCoordinates
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imagePath)
@@ -44,7 +40,10 @@ fun FlickrImage(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(100.dp)
-                .clickable { onClick() }
+                .clickable { onClick(layoutCoordinate) }
+                .onGloballyPositioned {
+                    layoutCoordinate = it
+                }
         )
 
         // Coil 이미지 로딩 상태일 때, 원형 프로그래스바 표출

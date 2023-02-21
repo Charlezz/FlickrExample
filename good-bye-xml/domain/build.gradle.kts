@@ -9,7 +9,11 @@ java {
 }
 
 dependencies {
+    testImplementation(Dependencies.Mockk.MOCKK)
+    testImplementation(Dependencies.Jetbrains.KotlinX.COROUTINE_TEST)
     implementation(Dependencies.Jetbrains.KotlinX.COROUTINE_CORE)
-    implementation("javax.inject:javax.inject:1")
     implementation(Dependencies.AndroidX.Paging.PAGING_COMMON)
+    implementation("javax.inject:javax.inject:1")
+    testImplementation(Dependencies.Kotest.ASSERTION)
+    testImplementation(Dependencies.Junit.JUNIT)
 }

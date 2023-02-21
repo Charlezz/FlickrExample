@@ -18,6 +18,14 @@ object Dependencies {
         const val MOCKITO_INLINE = "org.mockito:mockito-inline:$VERSION"
     }
 
+    object Mockk{
+        const val VERSION = "1.13.4"
+        const val MOCKK_ANDROID = "io.mockk:mockk-android:$VERSION"
+        const val MOCKK_AGENT = "io.mockk:mockk-agent:$VERSION"
+        const val MOCKK = "io.mockk:mockk:${VERSION}"
+
+    }
+
     object Kotest{
         const val ASSERTION = "io.kotest:kotest-assertions-core:5.5.5"
     }
@@ -260,6 +268,10 @@ object Dependencies {
 
     object JakeWharton {
         const val TIMBER = "com.jakewharton.timber:timber:5.0.1"
+    }
+
+    object SkyDove {
+        const val Orbital = "com.github.skydoves:orbital:0.2.4"
     }
 
 

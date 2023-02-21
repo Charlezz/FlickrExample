@@ -46,6 +46,7 @@ dependencies {
     testImplementation(Dependencies.SquareUp.OkHttp3.MOCK_WEB_SERVER)
     testImplementation(Dependencies.Junit.JUNIT)
     testImplementation(Dependencies.Kotest.ASSERTION)
+    testImplementation(Dependencies.Mockk.MOCKK)
 
     applyMoshi()
     applyOkHttp3()

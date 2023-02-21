@@ -50,6 +50,7 @@ dependencies {
 
     implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
     testImplementation(Dependencies.Kotest.ASSERTION)
+    testImplementation(Dependencies.Mockk.MOCKK)
 
     applyRoom()
     applyOkHttp3()
