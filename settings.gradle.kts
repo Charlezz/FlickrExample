@@ -7,5 +7,6 @@ include(
     ":good-bye-xml:app",
     ":good-bye-xml:data",
     ":good-bye-xml:domain",
-    ":good-bye-xml:network"
+    ":good-bye-xml:network",
+    ":good-bye-xml:local"
 )
