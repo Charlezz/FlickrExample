@@ -55,9 +55,11 @@ dependencies {
     implementation(project(":hello-compose-app:shared:remote"))
     implementation(project(":hello-compose-app:shared:local"))
     implementation(project(":hello-compose-app:presentation:main"))
+    implementation(project(":hello-compose-app:presentation:detail"))
 
     applyHilt()
 
+    implementation(Dependencies.Google.Accompanist.NAVIGATION_ANIMATION)
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_RUNTIME_KTX)
     implementation(Dependencies.AndroidX.Activity.ACTIVITY_COMPOSE)

@@ -9,6 +9,7 @@ include(
     ":hello-compose-app:shared:local",
     ":hello-compose-app:shared:data",
     ":hello-compose-app:presentation:main",
+    ":hello-compose-app:presentation:detail",
     ":hello-compose-app:ui:system",
     ":hello-compose-app:ui:image",
 

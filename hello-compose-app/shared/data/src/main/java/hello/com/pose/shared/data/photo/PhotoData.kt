@@ -4,4 +4,5 @@ data class PhotoData(
     val id: String,
     val secret: String,
     val server: String,
+    val title: String
 )

@@ -9,4 +9,5 @@ data class PhotoEntity(
     val id: String,
     val server: String,
     val secret: String,
+    val title: String
 )

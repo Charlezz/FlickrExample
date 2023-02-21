@@ -1,12 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
     kotlin("kapt")
 }
 
 android {
-    namespace = "hello.com.pose.presentation.main"
+    namespace = "hello.com.pose.presentation.detail"
     compileSdk = 33
 
     defaultConfig {
@@ -47,9 +46,9 @@ dependencies {
     implementation(project(":hello-compose-app:shared:domain"))
     implementation(Dependencies.Google.Accompanist.NAVIGATION_ANIMATION)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
+    implementation(Dependencies.AndroidX.Compose.UI.UI)
     implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
-    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
     implementation(Dependencies.AndroidX.Hilt.Navigation.COMPOSE)
     applyHilt()
 }

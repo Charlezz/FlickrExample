@@ -6,5 +6,6 @@ import hello.com.pose.shared.remote.response.FlickrResponse
 internal fun FlickrResponse.Photos.Photo.toData() = PhotoData(
     id = id.orEmpty(),
     secret = secret.orEmpty(),
-    server = server.orEmpty()
+    server = server.orEmpty(),
+    title = title.orEmpty()
 )

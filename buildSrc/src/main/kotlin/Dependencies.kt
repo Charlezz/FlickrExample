@@ -80,6 +80,7 @@ object Dependencies {
             const val FLOW_LAYOUT = "com.google.accompanist:accompanist-flowlayout:$VERSION"
             const val PAGER = "com.google.accompanist:accompanist-pager:$VERSION"
             const val SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$VERSION"
+            const val NAVIGATION_ANIMATION = "com.google.accompanist:accompanist-navigation-animation:$VERSION"
         }
 
 
@@ -196,6 +197,13 @@ object Dependencies {
             const val CUSTOM_VIEW = "androidx.customview:customview:1.2.0-alpha01"
             const val CUSTOM_VIEW_POOLING_CONTAINER =
                 "androidx.customview:customview-poolingcontainer:1.0.0-alpha01"
+        }
+
+        object Hilt {
+            object Navigation {
+                const val VERSION = "1.0.0"
+                const val COMPOSE = "androidx.hilt:hilt-navigation-compose:$VERSION"
+            }
         }
 
         object Test {

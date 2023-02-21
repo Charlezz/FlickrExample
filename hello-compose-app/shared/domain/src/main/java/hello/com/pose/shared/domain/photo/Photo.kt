@@ -4,6 +4,7 @@ data class Photo(
     val id: String,
     val secret: String,
     val server: String,
+    val title: String
 ) {
     fun getStaticImageUrl(): String {
         return "https://live.staticflickr.com/${server}/${id}_${secret}.jpg"
