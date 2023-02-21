@@ -1,4 +1,4 @@
-package good.bye.xml.data.remote
+package com.example.network.datasource
 
 import android.util.Log
 import com.example.network.api.FlickrApi

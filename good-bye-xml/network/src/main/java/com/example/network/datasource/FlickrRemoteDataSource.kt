@@ -1,4 +1,4 @@
-package good.bye.xml.data.remote
+package com.example.network.datasource
 
 import com.example.network.model.photos.GetPhotosResponse
 import com.example.network.model.NetworkResult

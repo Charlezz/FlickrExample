@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import good.bye.xml.data.pagingsource.PhotoPagingSourceRecent
 import good.bye.xml.data.pagingsource.PhotoPagingSourceSearch
-import good.bye.xml.data.remote.FlickrRemoteDataSource
+import com.example.network.datasource.FlickrRemoteDataSource
 import good.bye.xml.domain.model.photo.Photo
 import good.bye.xml.domain.repository.FlickrRepository
 import kotlinx.coroutines.flow.Flow

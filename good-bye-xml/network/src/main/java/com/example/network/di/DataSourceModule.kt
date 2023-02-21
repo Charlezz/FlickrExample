@@ -1,18 +1,18 @@
-package good.bye.xml.data.di
+package com.example.network.di
 
+import com.example.network.datasource.FlickrRemoteDataSource
+import com.example.network.datasource.FlickrRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import good.bye.xml.data.remote.FlickrRemoteDataSource
-import good.bye.xml.data.remote.FlickrRemoteDataSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
 interface DataSourceModule {
 
     @Binds
-    abstract fun bindsFlickrRemoteDataSource(
+    abstract fun bindFlickrRemoteDataSource(
         remote: FlickrRemoteDataSourceImpl
     ): FlickrRemoteDataSource
 }
