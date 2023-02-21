@@ -6,7 +6,7 @@ import com.example.network.model.photos.PhotosResponse
 import good.bye.xml.data.FakePhoto
 import good.bye.xml.data.remote.FlickrRemoteDataSource
 
-class FakeFlickRemoteSourceImpl() : FlickrRemoteDataSource {
+class FakeSuccessFlickRemoteSourceImpl() : FlickrRemoteDataSource {
 
     val fakeSuccess = NetworkResult.Success(
         GetPhotosResponse(

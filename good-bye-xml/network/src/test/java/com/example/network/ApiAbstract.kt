@@ -75,6 +75,12 @@ abstract class ApiAbstract<T> {
         mockWebServer.enqueue(mockResponse.setBody(source.readString(StandardCharsets.UTF_8)))
     }
 
+    fun enqueueError() {
+        val mockResponse = MockResponse()
+
+        mockWebServer.enqueue(mockResponse.setResponseCode(500))
+    }
+
     fun createService(clazz: Class<T>): T {
         return Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))

@@ -1,5 +1,3 @@
-
-
 package com.example.network
 
 import com.example.network.api.FlickrApi
@@ -30,5 +28,14 @@ class FlickApiTest : ApiAbstract<FlickrApi>() {
         val responseBody = requireNotNull((response))
 
         response.shouldBeInstanceOf<NetworkResult.Success<GetPhotosResponse>>()
+    }
+
+    @Throws(IOException::class)
+    @Test
+    fun `500 나올땐 정상적으로 Error 처리가 나오는가?`() = runTest {
+        enqueueError()
+        val response = service.getPhotosForSearch("", 10, 20)
+
+        response.shouldBeInstanceOf<NetworkResult.Error>()
     }
 }
