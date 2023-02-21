@@ -4,7 +4,7 @@ import com.example.network.model.NetworkResult
 import com.example.network.model.photos.GetPhotosResponse
 import com.example.network.model.photos.PhotosResponse
 import good.bye.xml.data.FakePhoto
-import good.bye.xml.data.remote.FlickrRemoteDataSource
+import good.bye.xml.data.datasource.local.remote.FlickrRemoteDataSource
 
 class FakeSuccessFlickRemoteSourceImpl() : FlickrRemoteDataSource {
 
