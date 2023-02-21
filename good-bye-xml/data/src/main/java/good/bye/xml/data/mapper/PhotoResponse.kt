@@ -20,7 +20,7 @@ fun PhotoResponse.toLocal(): PhotoEntity =
         server = server,
         farm = farm,
         title = title,
-        ispublic = ispublic,
-        isfriend = isfriend,
-        isfamily = isfamily
+        isPublic = isPublic,
+        isFriend = isFriend,
+        isFamily = isFamily
     )

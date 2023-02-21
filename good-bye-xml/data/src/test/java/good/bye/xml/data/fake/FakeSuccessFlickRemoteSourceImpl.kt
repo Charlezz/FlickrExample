@@ -12,7 +12,7 @@ class FakeSuccessFlickRemoteSourceImpl() : FlickrRemoteDataSource {
         GetPhotosResponse(
             photos = PhotosResponse(
                 page = 0,
-                pages = 20,
+                totalPages = 20,
                 perpage = 20,
                 total = 5,
                 photo = listOf(
