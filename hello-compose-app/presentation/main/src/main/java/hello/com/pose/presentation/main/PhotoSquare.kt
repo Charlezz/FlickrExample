@@ -9,7 +9,7 @@ import hello.com.pose.shared.domain.photo.Photo
 import hello.com.pose.ui.image.AsyncImage
 
 @Composable
-fun Photo(
+fun PhotoSquare(
     photo: Photo,
     onClickPhoto: (Photo) -> Unit,
 ) {

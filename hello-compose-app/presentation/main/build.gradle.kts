@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":hello-compose-app:ui:image"))
     implementation(project(":hello-compose-app:ui:system"))
     implementation(project(":hello-compose-app:shared:domain"))
+    implementation(project(":hello-compose-app:shared:core-mvi"))
     implementation(Dependencies.Google.Accompanist.NAVIGATION_ANIMATION)
     implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
     implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)

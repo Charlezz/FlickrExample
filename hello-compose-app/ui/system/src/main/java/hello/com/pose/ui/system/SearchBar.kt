@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SearchBar(
-    onDoneSearch: (String) -> Unit
+    onSearch: (String) -> Unit
 ) {
     var text by rememberSaveable { mutableStateOf("") }
 
@@ -36,7 +36,7 @@ fun SearchBar(
             .padding(horizontal = 16.dp, vertical = 4.dp),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
-            onDone = { onDoneSearch(text) }
+            onSearch = { onSearch(text) }
         )
     )
 }
