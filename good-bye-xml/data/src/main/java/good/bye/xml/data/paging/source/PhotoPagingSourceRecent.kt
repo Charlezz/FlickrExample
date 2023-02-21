@@ -1,28 +1,23 @@
-package good.bye.xml.data.pagingsource
+package good.bye.xml.data.paging.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.network.datasource.FlickrRemoteDataSource
 import com.example.network.model.NetworkResult
 import com.example.network.model.photos.PhotoResponse
 import good.bye.xml.data.mapper.toDomain
-import good.bye.xml.data.remote.FlickrRemoteDataSource
 import good.bye.xml.domain.model.photo.Photo
 import java.io.IOException
+import javax.inject.Inject
 
-class PhotoPagingSourceSearch constructor(
-    private val dataSource: FlickrRemoteDataSource,
-    private val keyword: String
+class PhotoPagingSourceRecent @Inject constructor(
+    private val dataSource: FlickrRemoteDataSource
 ) : PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         return try {
             val page = params.key ?: 1
-            val response =
-                if (keyword.isNotBlank()) dataSource.getPhotosForSearch(
-                    keyword = keyword,
-                    perPage = params.loadSize,
-                    page = page
-                ) else dataSource.getPhotosForRecent(perPage = params.loadSize, page = page)
+            val response = dataSource.getPhotosForRecent(params.loadSize, page)
 
             when (response) {
                 is NetworkResult.Success ->
