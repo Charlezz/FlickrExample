@@ -14,33 +14,29 @@ class FlickrLocalDataSourceImpl @Inject constructor(
 ): FlickrLocalDataSource {
 
     override suspend fun getNextPage(): Int {
-        return photoDao.getPagingKey().page
+        return photoDao.getPagingKey().run { page.takeIf { canMorePaging } ?: 0 }
     }
 
     // 네이밍 변경 예정 clearToAddPhotos()
-    override suspend fun clearToAddPhotos(photos: List<PhotoEntity>, nextPage: Int) {
+    override suspend fun clearToAddPhotos(photos: List<PhotoEntity>, nextPage: Int, totalPages: Int) {
         database.withTransaction {
             with(photoDao) {
                 // Photo 테이블 clear
                 deleteAll()
 
-                // Photo Remote Key 테이블 clear
-                clearPagingKey()
-
                 // Photo 테이블 전체 추가
                 insertAll(photos)
 
                 // Photo Remote Key 테이블 추가
-                replacePagingRemoteKey(PhotoRemoteKeyEntity(nextPage))
+                replacePagingRemoteKey(PhotoRemoteKeyEntity(page = nextPage, totalPages = totalPages))
             }
         }
     }
 
-    override suspend fun addPhotos(photos: List<PhotoEntity>, nextPage: Int) {
+    override suspend fun addPhotos(photos: List<PhotoEntity>, nextPage: Int, totalPages: Int) {
         with(photoDao) {
             insertAll(photos)
-            clearPagingKey()
-            replacePagingRemoteKey(PhotoRemoteKeyEntity(nextPage))
+            replacePagingRemoteKey(PhotoRemoteKeyEntity(page = nextPage, totalPages = totalPages))
         }
     }
 
