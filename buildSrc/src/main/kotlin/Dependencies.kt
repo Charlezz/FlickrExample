@@ -301,6 +301,7 @@ object Dependencies {
         const val DOMAIN = ":good-bye-xml:domain"
         const val DATA = ":good-bye-xml:data"
         const val NETWORK = ":good-bye-xml:network"
+        const val LOCAL = ":good-bye-xml:local"
     }
 }
 

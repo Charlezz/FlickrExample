@@ -39,6 +39,7 @@ android {
 dependencies {
     implementation(project(Dependencies.GoodByeXml.DOMAIN))
     implementation(project(Dependencies.GoodByeXml.NETWORK))
+    implementation(project(Dependencies.GoodByeXml.LOCAL))
 
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
