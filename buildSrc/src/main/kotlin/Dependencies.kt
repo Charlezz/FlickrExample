@@ -230,7 +230,7 @@ object Dependencies {
             const val COMPILER = "androidx.room:room-compiler:$VERSION"
             const val KTX = "androidx.room:room-ktx:$VERSION"
             const val ROOM_TESTING = "androidx.room:room-testing:$VERSION"
-            const val ROOM_PAGING = "androidx.room:room-paging:2.5.0-alpha03"
+            const val ROOM_PAGING = "androidx.room:room-paging:$VERSION"
         }
     }
 
