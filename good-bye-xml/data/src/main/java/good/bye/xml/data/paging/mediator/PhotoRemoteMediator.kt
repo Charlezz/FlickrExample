@@ -26,17 +26,15 @@ class PhotoRemoteMediator(
     ): MediatorResult {
         try {
             val loadPage = when (loadType) {
-                // Refresh - 데이터 페이징 처음 시작 의미
                 LoadType.REFRESH ->
                     START_PAGE
 
-                // Prepend - 데이터 페이징 처음 시작 의미
                 LoadType.PREPEND ->
                     return MediatorResult.Success(endOfPaginationReached = true)
 
-                // Append - 로컬 DB 내 저장된 다음 페이지
                 LoadType.APPEND ->
-                    local.getNextPage()
+                    local.getNextPage().takeIf { it > 0 }
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
             }
 
             val perPage = state.config.pageSize
@@ -51,7 +49,7 @@ class PhotoRemoteMediator(
                     remote.getPhotosForSearch(keyword = keyword, page = loadPage, perPage = perPage)
             }
 
-            val (photos, nextPage) = when (response) {
+            val result = when (response) {
                 is NetworkResult.Error ->
                     throw NetworkErrorException("[${response.code}] ${response.message}")
 
@@ -59,22 +57,25 @@ class PhotoRemoteMediator(
                     throw response.exception
 
                 is NetworkResult.Success ->
-//                    response.data.photos.run { photo.map(PhotoResponse::toDomain) to page.plus(1) }
-                    response.data.photos.run { photo.map(PhotoResponse::toLocal) to page.plus(1) }
+                    response.data.photos
             }
+
+            val photos = result.photo.map(PhotoResponse::toLocal)
+            val nextPage = result.page.plus(1)
+            val totalPage = result.totalPages
 
             when (loadType) {
                 LoadType.REFRESH ->
-                    local.clearToAddPhotos(photos, nextPage)
+                    local.clearToAddPhotos(photos, nextPage, totalPage)
 
                 LoadType.APPEND ->
-                    local.addPhotos(photos, nextPage)
+                    local.addPhotos(photos, nextPage, totalPage)
 
                 else -> {}
             }
 
-            // 페이징 종료 여부 - Remote에서 받아온 데이터가 비어있다면 페이징 종료
-            val endOfPaginationReached = photos.isEmpty()
+            // 페이징 종료 여부 - Remote Response 내 pages와 현재 요청한 page가 같거나, Remote에서 받아온 데이터가 비어있다면 페이징 종료
+            val endOfPaginationReached = (loadPage == totalPage) || photos.isEmpty()
 
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
 
