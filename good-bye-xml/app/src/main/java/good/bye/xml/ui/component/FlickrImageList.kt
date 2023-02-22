@@ -24,13 +24,14 @@ fun FlickrImageList(
 
     ) {
         items(images.itemCount) { index ->
-            val image = images[index]!!.formattedUrl
-            FlickrImage(
-                imagePath = images[index]!!.formattedUrl,
-                onClick = { layoutCoordinates, asyncImagePainter ->
-                    onClick(asyncImagePainter, layoutCoordinates)
-                }
-            )
+            images.get(index)?.run {
+                FlickrImage(
+                    imagePath = formattedUrl,
+                    onClick = { layoutCoordinates, asyncImagePainter ->
+                        onClick(asyncImagePainter, layoutCoordinates)
+                    }
+                )
+            }
         }
     }
 }
