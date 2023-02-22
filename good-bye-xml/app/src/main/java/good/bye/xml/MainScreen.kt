@@ -68,11 +68,6 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         }
     }
 
-    Log.d("Test", "MainScreen: width ${informationSize.width.pxToDp()}")
-    Log.d("Test", "MainScreen: height${informationSize.height.pxToDp()}")
-    Log.d("Test", "MainScreen: x ${informationBtnOffset.x.pxToDp()}")
-    Log.d("Test", "MainScreen: y ${informationBtnOffset.y.pxToDp()}")
-
     // 스크롤 중이면서, TextField가 포커스를 갖고 있다면 focus clear
     if (lazyGridState.isScrollInProgress && hasTextFieldFocus) {
         focusManager.clearFocus()
