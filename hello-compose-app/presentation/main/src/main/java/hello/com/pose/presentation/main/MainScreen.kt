@@ -1,30 +1,26 @@
 package hello.com.pose.presentation.main
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
 import hello.com.pose.shared.domain.photo.Photo
 import hello.com.pose.ui.system.component.IconSetting
 import hello.com.pose.ui.system.component.SearchBar
+import kotlinx.coroutines.launch
 import androidx.paging.compose.collectAsLazyPagingItems as collectAsLazyPagingItems1
 
 @Composable
@@ -69,6 +65,7 @@ internal fun MainScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhotoList(
     state: MainContract.State.PhotoListState,
@@ -82,30 +79,80 @@ fun PhotoList(
         state.pagingDataFlow.collectAsLazyPagingItems1()
     else null
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(PhotoCellCount),
-        modifier = Modifier
-            .fillMaxSize(),
-        state = scrollState,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        searchBar(onSearch, onClickSetting)
-        pagingItems?.let { pagingItems ->
-            items(
-                count = pagingItems.itemCount
-            ) { index ->
-                pagingItems[index]?.let { photo ->
-                    PhotoSquare(photo, onClickPhoto)
+    val scope = rememberCoroutineScope()
+
+    Scaffold(floatingActionButton = {
+        AnimatedVisibility(visible = !scrollState.isScrollingUp(), enter = fadeIn(), exit = fadeOut()) {
+            ScrollToTop {
+                scope.launch {
+                    scrollState.animateScrollToItem(0)
                 }
             }
+        }
+    }) { paddingValues ->
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(PhotoCellCount),
+            modifier = Modifier
+                .padding(paddingValues = PaddingValues(8.dp)),
+            state = scrollState,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            searchBar(onSearch, onClickSetting)
+            pagingItems?.let { pagingItems ->
+                items(
+                    count = pagingItems.itemCount
+                ) { index ->
+                    pagingItems[index]?.let { photo ->
+                        PhotoSquare(photo, onClickPhoto)
+                    }
+                }
 
-            when {
-                pagingItems.loadState.refresh is LoadState.Loading -> loadingItem()
-                pagingItems.loadState.append is LoadState.Loading -> loadingItem()
+                when {
+                    pagingItems.loadState.refresh is LoadState.Loading -> loadingItem()
+                    pagingItems.loadState.append is LoadState.Loading -> loadingItem()
+                }
             }
         }
     }
+}
+
+@Composable
+fun ScrollToTop(onClick: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        FloatingActionButton(
+            modifier = Modifier
+                .padding(16.dp)
+                .size(50.dp)
+                .align(Alignment.BottomEnd),
+            onClick = onClick,
+            containerColor = White, contentColor = Black
+        ) {
+            Icon(
+                painter = painterResource(id = hello.com.pose.ui.system.R.drawable.baseline_arrow_upward_24),
+                contentDescription = "go to top"
+            )
+        }
+    }
+}
+
+@Composable
+fun LazyGridState.isScrollingUp(): Boolean {
+    var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
+    var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
+
+    return remember(this) {
+        derivedStateOf {
+            if (previousIndex != firstVisibleItemIndex) {
+                previousIndex > firstVisibleItemIndex
+            } else {
+                previousScrollOffset >= firstVisibleItemScrollOffset
+            }.also {
+                previousIndex = firstVisibleItemIndex
+                previousScrollOffset = firstVisibleItemScrollOffset
+            }
+        }
+    }.value
 }
 
 private fun LazyGridScope.searchBar(
