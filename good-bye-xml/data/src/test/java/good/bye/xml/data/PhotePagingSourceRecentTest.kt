@@ -41,13 +41,13 @@ class PhotoPagingSourceRecentTest {
             PagingSource.LoadParams.Refresh(
                 key = 1,
                 loadSize = 2,
-                placeholdersEnabled = false
-            )
+                placeholdersEnabled = false,
+            ),
         ) shouldBeEqualToComparingFields
             PagingSource.LoadResult.Page(
                 data = listOf(FakePhoto.testPhoto1.toDomain(), FakePhoto.testPhoto2.toDomain()),
                 prevKey = null,
-                nextKey = FakePhoto.testPhoto2.id
+                nextKey = FakePhoto.testPhoto2.id,
             )
     }
 
@@ -62,12 +62,12 @@ class PhotoPagingSourceRecentTest {
                     total = 5,
                     photo = listOf(
                         FakePhoto.testPhoto1,
-                        FakePhoto.testPhoto2
+                        FakePhoto.testPhoto2,
 
-                    )
+                    ),
                 ),
-                stat = ""
-            )
+                stat = "",
+            ),
         )
 
         coEvery { mockRemoteDataSource.getPhotosForRecent(10, 10) } returns mockSuccess
@@ -77,13 +77,13 @@ class PhotoPagingSourceRecentTest {
             PagingSource.LoadParams.Refresh(
                 key = 1,
                 loadSize = 2,
-                placeholdersEnabled = false
-            )
+                placeholdersEnabled = false,
+            ),
         ) shouldBeEqualToComparingFields
             PagingSource.LoadResult.Page(
                 data = listOf(FakePhoto.testPhoto1.toDomain(), FakePhoto.testPhoto2.toDomain()),
                 prevKey = null,
-                nextKey = FakePhoto.testPhoto2.id
+                nextKey = FakePhoto.testPhoto2.id,
             )
 
         coVerify { mockRemoteDataSource.getPhotosForRecent(10, 10) }
@@ -97,8 +97,8 @@ class PhotoPagingSourceRecentTest {
             PagingSource.LoadParams.Refresh(
                 key = 1,
                 loadSize = 2,
-                placeholdersEnabled = false
-            )
+                placeholdersEnabled = false,
+            ),
         ) shouldBe (
             PagingSource.LoadResult.Error(throwable = IllegalArgumentException())
             )

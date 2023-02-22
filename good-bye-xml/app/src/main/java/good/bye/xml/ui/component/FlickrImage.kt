@@ -23,14 +23,14 @@ import good.bye.xml.ui.theme.GoodByeXmlTheme
 fun FlickrImage(
     imagePath: String,
     modifier: Modifier = Modifier,
-    onClick: ((LayoutCoordinates, AsyncImagePainter) -> Unit) = { layoutCoordinates: LayoutCoordinates, asyncImagePainter: AsyncImagePainter -> }
+    onClick: ((LayoutCoordinates, AsyncImagePainter) -> Unit) = { layoutCoordinates: LayoutCoordinates, asyncImagePainter: AsyncImagePainter -> },
 ) {
     lateinit var layoutCoordinate: LayoutCoordinates
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imagePath)
             .crossfade(true)
-            .build()
+            .build(),
     )
 
     Box {
@@ -40,10 +40,14 @@ fun FlickrImage(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(100.dp)
-                .clickable { onClick(layoutCoordinate) }
+                .clickable {
+                    if (painter.state is AsyncImagePainter.State.Success) {
+                        onClick(layoutCoordinate, painter)
+                    }
+                }
                 .onGloballyPositioned {
                     layoutCoordinate = it
-                }
+                },
         )
 
         // Coil 이미지 로딩 상태일 때, 원형 프로그래스바 표출
