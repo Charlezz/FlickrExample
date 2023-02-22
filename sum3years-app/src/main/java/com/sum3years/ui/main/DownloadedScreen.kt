@@ -79,8 +79,13 @@ fun DownloadedScreen() {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    file.delete()
-                    deleteTarget = null
+                    if (file.exists()) {
+                        try {
+                            file.delete()
+                        } finally {
+                            deleteTarget = null
+                        }
+                    }
                 }) {
                     Text("삭제")
                 }
