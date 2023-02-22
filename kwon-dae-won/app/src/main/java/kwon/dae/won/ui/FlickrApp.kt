@@ -41,6 +41,8 @@ import kwon.dae.won.R
 import kwon.dae.won.home.HomeNavGraph
 import kwon.dae.won.home.homeNavGraph
 import kwon.dae.won.setting.SettingsNavGraph
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 /**
@@ -87,7 +89,8 @@ fun FlickrApp(
             ) {
                 homeNavGraph(
                     onNavigationIconClick = flickrAppScaffoldState::onNavigationClick,
-                    onBackIconClick = flickrAppScaffoldState::onBackIconClick
+                    onBackIconClick = flickrAppScaffoldState::onBackIconClick,
+                    onPhotoShortClick = flickrAppScaffoldState::onPhotoClick
                 )
             }
         }
@@ -184,6 +187,13 @@ class FlickrAppScaffoldState @OptIn(ExperimentalMaterial3Api::class) constructor
         coroutineScope.launch {
             drawerState.open()
         }
+    }
+
+    fun onPhotoClick(url: String) {
+        val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
+        navController.navigate(
+            route = HomeNavGraph.homeDetailRoute(encodedUrl)
+        )
     }
 
     fun onBackIconClick() {

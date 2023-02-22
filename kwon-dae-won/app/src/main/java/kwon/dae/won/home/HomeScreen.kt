@@ -48,6 +48,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigationIconClick: () -> Unit = {},
+    onPhotoShortClick: (String) -> Unit,
 ) {
     val lazyPagingPhotos = viewModel.recentImage.collectAsLazyPagingItems()
     val photos by remember { mutableStateOf(lazyPagingPhotos) }
@@ -79,6 +80,11 @@ fun HomeScreen(
                 modifier = Modifier,
                 paddingValues = padding,
                 photos = photos,
+                onShortClick = { index ->
+                    photos[index]?.let {
+                        onPhotoShortClick(imageUrl(it.id, it.secret))
+                    }
+                },
                 onLongClick = { index ->
                     openDialog = true to index
                 },
@@ -127,6 +133,7 @@ fun PhotoPagingList(
     modifier: Modifier,
     paddingValues: PaddingValues,
     photos: LazyPagingItems<Photo>,
+    onShortClick: (Int) -> Unit,
     onLongClick: (Int) -> Unit,
     keyWord: String,
     onValueChange: (String) -> Unit,
@@ -181,7 +188,9 @@ fun PhotoPagingList(
                                     .width(200.dp)
                                     .height(150.dp)
                                     .combinedClickable(
-                                        onClick = { },
+                                        onClick = {
+                                            onShortClick(index)
+                                        },
                                         onLongClick = {
                                             onLongClick(index)
                                         }
@@ -286,6 +295,7 @@ fun PreviewCurrentPhotoList() {
         modifier = Modifier,
         paddingValues = PaddingValues(0.dp),
         photos = flowOf(PagingData.from(Photo.fake())).collectAsLazyPagingItems(),
+        onShortClick = { },
         onLongClick = { },
         keyWord = "Charlezz",
         onValueChange = { },
