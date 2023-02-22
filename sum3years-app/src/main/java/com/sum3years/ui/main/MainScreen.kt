@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -100,18 +99,7 @@ fun MainScreen(
 
         when (state.searchDisplay) {
             SearchDisplay.Initial -> {
-                Box(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        "다운로드 된 사진이 없습니다!",
-                        fontSize = 24.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                DownloadedScreen()
             }
 
             SearchDisplay.NoResults -> {

@@ -1,6 +1,7 @@
 package com.sum3years
 
 import android.os.Bundle
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,11 +26,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.lifecycleScope
 import com.sum3years.model.PhotoUIModel
 import com.sum3years.ui.main.MainScreen
 import com.sum3years.ui.main.PhotoDetail
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
@@ -65,7 +72,9 @@ class MainActivity : ComponentActivity() {
             showPhotoDetail?.let { photo ->
                 Dialog(onDismissRequest = { showPhotoDetail = null }) {
                     Surface(
-                        modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                         shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.background,
                     ) {
@@ -73,12 +82,18 @@ class MainActivity : ComponentActivity() {
                             photo = photo,
                             onClose = { showPhotoDetail = null },
                             onDownloadClick = {
-                                // TODO Download Image
-                                Toast.makeText(
-                                    this,
-                                    "Download ${photo.loadUrlOriginal}",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
+                                downloadImage(photo) { success ->
+                                    // TODO 여기서 lifecycleScope 열어도 되나? 람다에서는 리컴포지션 영향 없나?
+                                    lifecycleScope.launch(Dispatchers.Main) {
+                                        val message =
+                                            if (success) "Download 폴더에 저장되었습니다!" else "다운로드에 실패했습니다"
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            message,
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                    }
+                                }
                             },
                         )
                     }
@@ -96,6 +111,34 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun downloadImage(
+        image: PhotoUIModel,
+        success: (Boolean) -> Unit = {},
+    ) {
+        try {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val connection = URL(image.loadUrlMedium).openConnection() as HttpURLConnection
+                val inputStream = connection.inputStream
+
+                val downloadDir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                if (!downloadDir.exists()) {
+                    downloadDir.mkdir()
+                }
+                val file = File(downloadDir, "${image.id}_${image.title}.jpg")
+
+                val outputStream = FileOutputStream(file)
+                inputStream.copyTo(outputStream)
+                outputStream.flush()
+                outputStream.close()
+
+                success(file.exists())
+            }
+        } catch (_: Exception) {
+            success(false)
         }
     }
 }
