@@ -34,9 +34,6 @@ class MainViewModel @Inject constructor(
     private val currentSearchQuery = MutableStateFlow("")
     val searchQuery = currentSearchQuery.asStateFlow()
 
-    fun getPagingFlow(query: String) = getPhotoPagingSourceUseCase(query)
-        .cachedIn(viewModelScope)
-
     private val _downloadStateFlow: MutableStateFlow<DownLoadState> = MutableStateFlow(DownLoadState())
     val downloadStateFlow: StateFlow<DownLoadState> = _downloadStateFlow.asStateFlow()
 
@@ -45,6 +42,9 @@ class MainViewModel @Inject constructor(
             _downloadStateFlow.value = value
         }
         get() = _downloadStateFlow.value
+
+    fun getPagingFlow(query: String) = getPhotoPagingSourceUseCase(query)
+        .cachedIn(viewModelScope)
 
     fun setNewQuery(query: String) {
         currentSearchQuery.value = query

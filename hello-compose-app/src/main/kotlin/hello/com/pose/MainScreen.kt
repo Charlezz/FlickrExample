@@ -1,24 +1,32 @@
 package hello.com.pose
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import hello.com.pose.composable.SearchBar
+import hello.com.pose.composable.Alert
 import hello.com.pose.shared.domain.photo.Photo
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val lazyGridState = rememberLazyGridState()
@@ -41,14 +49,13 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(8.dp)) {
-            SearchBar(
+            /*SearchBar(
                 text = currentSearchQuery,
                 inputChange = {
                     viewModel.setNewQuery(it)
-                }
-            )
-            SearchList(viewModel.photoList, lazyGridState)
-            PhotoList(pagingItems)
+                },
+            )*/
+            //PhotoList(pagingItems, { })
             LaunchedEffect(key1 = currentSearchQuery) {
                 if (viewModel.prevQuery != currentSearchQuery) {
                     coroutineScope.launch {
@@ -61,58 +68,30 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 }
 
 @Composable
-fun PhotoList(pagingItems: LazyPagingItems<Photo>) {
-    val scrollState = rememberLazyGridState()
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(4),
-        state = scrollState,
-    ) {
-        items(pagingItems.itemCount) { index ->
-            pagingItems[index]?.let { photo ->
-                PhotoScreen(photo = photo)
-            }
-        }
-
-        when {
-            pagingItems.loadState.refresh is LoadState.Loading -> loadingItem()
-            pagingItems.loadState.append is LoadState.Loading -> loadingItem()
-        }
-    }
-}
-
-private fun LazyGridScope.loadingItem() {
-    item(
-        span = { GridItemSpan(2) },
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(102.dp),
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center),
-            )
-        }
-    }
-}
-
-@Composable
-fun SearchList(
-    photos: MutableList<Photo>,
-    gridState: LazyGridState
-) {
+fun SearchList(viewModel: MainViewModel, gridState: LazyGridState) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         state = gridState,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        items(photos) { photo ->
-            PhotoScreen(photo)
+        items(viewModel.photoList) { photo ->
+            MainContentItem(photo = photo)
         }
     }
 }
 
 val LazyGridState.isLastItemVisible: Boolean
     get() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+
+@Composable
+fun MainContentItem(photo: Photo) {
+    val showDownloadDialog = remember { mutableStateOf(false) }
+
+    if (showDownloadDialog.value) {
+        Alert(
+            showDialog = showDownloadDialog.value,
+            onDismiss = { showDownloadDialog.value = false },
+            photo,
+        )
+    }
+}
+

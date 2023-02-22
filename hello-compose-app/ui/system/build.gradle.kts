@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.Compose.UI.UI)
     implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
 }

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("dagger.hilt.android.plugin")
+    kotlin("kapt")
 }
 
 android {
@@ -24,6 +26,12 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.COMPILER_VERSION
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -34,11 +42,15 @@ android {
 }
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.0")
-    implementation("com.google.android.material:material:1.8.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(project(":hello-compose-app:ui:image"))
+    implementation(project(":hello-compose-app:ui:system"))
+    implementation(project(":hello-compose-app:shared:domain"))
+    implementation(project(":hello-compose-app:shared:core-mvi"))
+    implementation(Dependencies.Google.Accompanist.NAVIGATION_ANIMATION)
+    implementation(Dependencies.AndroidX.Lifecycle.LIFECYCLE_VIEWMODEL_COMPOSE)
+    implementation(Dependencies.AndroidX.Compose.UI.UI_TOOLING_PREVIEW)
+    implementation(Dependencies.AndroidX.Compose.Material3.MATERIAL3)
+    implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
+    implementation(Dependencies.AndroidX.Hilt.Navigation.COMPOSE)
+    applyHilt()
 }

@@ -7,6 +7,7 @@ fun PhotoData.toEntity() = PhotoEntity(
     id = id,
     server = server,
     secret = secret,
+    title= title
 )
 
 fun List<PhotoData>.toEntities() = map { it.toEntity() }

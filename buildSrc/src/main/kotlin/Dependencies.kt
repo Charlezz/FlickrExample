@@ -80,6 +80,7 @@ object Dependencies {
             const val FLOW_LAYOUT = "com.google.accompanist:accompanist-flowlayout:$VERSION"
             const val PAGER = "com.google.accompanist:accompanist-pager:$VERSION"
             const val SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$VERSION"
+            const val NAVIGATION_ANIMATION = "com.google.accompanist:accompanist-navigation-animation:$VERSION"
         }
 
 
@@ -115,7 +116,7 @@ object Dependencies {
             const val PAGING_RUNTIME_KTX = "androidx.paging:paging-runtime-ktx:$VERSION"
             const val PAGING_COMMON = "androidx.paging:paging-common:$VERSION"
             const val PAGING_COMMON_KTX = "androidx.paging:paging-common-ktx:$VERSION"
-            const val PAGING_COMPOSE = "androidx.paging:paging-compose:1.0.0-alpha15"
+            const val PAGING_COMPOSE = "androidx.paging:paging-compose:1.0.0-alpha17"
         }
 
         object Activity {
@@ -175,7 +176,7 @@ object Dependencies {
             }
 
             object Material3 {
-                const val VERSION = "1.0.0-alpha13"
+                const val VERSION = "1.1.0-alpha03"
                 const val MATERIAL3 = "androidx.compose.material3:material3:$VERSION"
                 const val MATERIAL3_WINDOW_SIZE_CLASS =
                     "androidx.compose.material3:material3-window-size-class:$VERSION"
@@ -196,6 +197,13 @@ object Dependencies {
             const val CUSTOM_VIEW = "androidx.customview:customview:1.2.0-alpha01"
             const val CUSTOM_VIEW_POOLING_CONTAINER =
                 "androidx.customview:customview-poolingcontainer:1.0.0-alpha01"
+        }
+
+        object Hilt {
+            object Navigation {
+                const val VERSION = "1.0.0"
+                const val COMPOSE = "androidx.hilt:hilt-navigation-compose:$VERSION"
+            }
         }
 
         object Test {
@@ -275,7 +283,7 @@ object Dependencies {
     object Io {
         object Coil {
             // https://coil-kt.github.io/coil/getting_started/#artifacts
-            const val VERSION = "2.1.0"
+            const val VERSION = "2.2.2"
             const val COIL = "io.coil-kt:coil:$VERSION"
             const val COIL_BASE = "io.coil-kt:coil-base:$VERSION"
             const val COIL_COMPOSE = "io.coil-kt:coil-compose:$VERSION"

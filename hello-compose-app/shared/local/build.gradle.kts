@@ -40,7 +40,7 @@ android {
 dependencies {
     implementation(project(":hello-compose-app:shared:data"))
     implementation(Dependencies.AndroidX.Paging.PAGING_COMMON_KTX)
-
+    implementation(Dependencies.AndroidX.DATASTORE_PREFERENCES)
     implementation(Dependencies.AndroidX.Room.RUNTIME)
     implementation(Dependencies.AndroidX.Room.KTX)
     implementation(Dependencies.AndroidX.Room.ROOM_PAGING)

@@ -8,9 +8,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hello.com.pose.shared.data.photo.PhotoLocalDataSource
+import hello.com.pose.shared.data.setting.SettingLocalDataSource
 import hello.com.pose.shared.local.room.AppDatabase
 import hello.com.pose.shared.local.room.photo.PhotoDao
 import hello.com.pose.shared.local.room.photo.PhotoLocalDataSourceImpl
+import hello.com.pose.shared.local.room.setting.SettingLocalDataSourceImpl
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -18,8 +20,13 @@ import javax.inject.Singleton
 internal abstract class LocalDataBindsModule {
     @Binds
     abstract fun bindPhotoLocalDataSource(
-        dataSource: PhotoLocalDataSourceImpl,
+        dataSource: PhotoLocalDataSourceImpl
     ): PhotoLocalDataSource
+
+    @Binds
+    abstract fun bindSettingLocalDataSource(
+        dataSource: SettingLocalDataSourceImpl
+    ): SettingLocalDataSource
 }
 
 @Module
