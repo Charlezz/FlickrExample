@@ -28,7 +28,7 @@ fun DownloadedScreen() {
         ) {
             items(images.size) { index ->
                 AsyncImage(
-                    model = images[index],
+                    model = images[images.lastIndex - index],
                     contentDescription = "downloaded image",
                     modifier = Modifier.fillMaxWidth(),
                     contentScale = ContentScale.Crop,
