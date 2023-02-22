@@ -61,6 +61,13 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     var informationSize by remember { mutableStateOf(IntSize.Zero) }
     var isTransformed by rememberSaveable { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = isTransformed) {
+        if (!isTransformed) {
+            delay(300)
+            downloadImage = null
+        }
+    }
+
     Log.d("Test", "MainScreen: width ${informationSize.width.pxToDp()}")
     Log.d("Test", "MainScreen: height${informationSize.height.pxToDp()}")
     Log.d("Test", "MainScreen: x ${informationBtnOffset.x.pxToDp()}")
@@ -81,23 +88,6 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 isTransformed = true
             }
         }
-
-//    Surface(Modifier.fillMaxSize()) {
-//        if (isDialogShow) {
-//            Dialog(onDismissRequest = { isDialogShow = false }) {
-//                Column(modifier = Modifier.background(Color.White)) {
-//                    Text(text = "사진을 다운로드 하시겠습니까?")
-//                    Spacer(modifier = Modifier.height(30.dp))
-//                    Row(Modifier.align(Alignment.CenterHorizontally)) {
-//                        Button(onClick = { downloadManager.downloadFile(downloadImage) }) {
-//                            Text(text = "확인")
-//                        }
-//                        Button(onClick = { isDialogShow = false }) { Text(text = "취소") }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     Column(
         modifier = Modifier
@@ -137,7 +127,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                                 .size(
                                     informationSize.width.pxToDp(),
                                     informationSize.height.pxToDp(),
-                                ).offset(
+                                )
+                                .offset(
                                     informationBtnOffset.x.pxToDp(),
                                     informationBtnOffset.y.pxToDp(),
                                 )
@@ -147,26 +138,25 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                         this@rememberContentWithOrbitalScope,
                         SpringSpec(stiffness = 500f),
                         SpringSpec(stiffness = 500f),
-                    ),
+                    )
             )
         }
 
         Orbital(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .height(620.dp).clickable {
-                    isTransformed = !isTransformed
-                    if (!isTransformed) {
-                        coroutineScope.launch {
-                            delay(300)
-                            downloadImage = null
-                        }
-                    }
-                },
+                .height(620.dp)
+                .clickable { isTransformed = !isTransformed }
         ) {
             if (isTransformed) {
-                FlickDetail(content = { poster() })
+                FlickDetail(
+                    content = { poster() },
+                    onConfirmClick = {
+                        downloadImage?.run { request.data.toString() }?.run(downloadManager::downloadFile)
+                        isTransformed = false
+                                     },
+                    onCancelClick = { isTransformed = false }
+                )
             } else {
                 poster()
             }
@@ -175,15 +165,20 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 }
 
 @Composable
-fun FlickDetail(content: @Composable () -> Unit) {
-    Column() {
+fun FlickDetail(
+    content: @Composable () -> Unit,
+    onConfirmClick: () -> Unit,
+    onCancelClick: () -> Unit,
+) {
+    Column {
         content()
 
         Row(Modifier.align(Alignment.CenterHorizontally)) {
-            Button(onClick = { }) {
-                Text(text = "확인")
-            }
-            Button(onClick = { }) { Text(text = "취소") }
+
+            Button(onClick = onConfirmClick) { Text(text = "확인") }
+
+            Button(onClick = onCancelClick) { Text(text = "취소") }
+
         }
     }
 }
