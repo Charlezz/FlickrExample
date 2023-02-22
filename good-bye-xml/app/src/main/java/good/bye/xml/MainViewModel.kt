@@ -8,8 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import good.bye.xml.domain.model.photo.Photo
-import good.bye.xml.domain.usecase.GetPhotoForRecentUseCase
-import good.bye.xml.domain.usecase.GetPhotoForSearchUseCase
+import good.bye.xml.domain.usecase.GetPhotoForPagingUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getPhotoForRecentUseCase: GetPhotoForRecentUseCase,
-    private val getPhotoForSearchUseCase: GetPhotoForSearchUseCase
+    private val getPhotoForPagingUseCase: GetPhotoForPagingUseCase
 ) : ViewModel() {
 
     private val _searchKeyword = mutableStateOf("")
@@ -37,12 +35,8 @@ class MainViewModel @Inject constructor(
 
     fun loadImages() = viewModelScope.launch {
         val searchQuery = _searchKeyword.value
-        if (searchQuery.isBlank()) {
-            getPhotoForRecentUseCase()
-        } else {
-            getPhotoForSearchUseCase(searchQuery)
-        }.cachedIn(viewModelScope).collect {
-            _searchedImages.value = it
-        }
+        getPhotoForPagingUseCase(keyword = searchQuery)
+            .cachedIn(viewModelScope)
+            .collect { _searchedImages.value = it }
     }
 }

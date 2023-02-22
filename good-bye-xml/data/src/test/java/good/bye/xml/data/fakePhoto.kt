@@ -10,9 +10,9 @@ object FakePhoto {
         server = 0,
         farm = 0,
         title = "테스트1",
-        ispublic = 0,
-        isfriend = 0,
-        isfamily = 0
+        isPublic = 0,
+        isFriend = 0,
+        isFamily = 0
     )
 
     val testPhoto2 = PhotoResponse(
@@ -22,8 +22,8 @@ object FakePhoto {
         server = 0,
         farm = 0,
         title = "테스트2",
-        ispublic = 0,
-        isfriend = 0,
-        isfamily = 0
+        isPublic = 0,
+        isFriend = 0,
+        isFamily = 0
     )
 }

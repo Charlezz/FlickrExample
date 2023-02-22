@@ -18,7 +18,10 @@
 
 package com.example.network
 
+import com.example.network.retrofit.NetworkResultCallAdapterFactory
 import com.example.network.rule.MainCoroutinesRule
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -68,13 +71,27 @@ abstract class ApiAbstract<T> {
         for ((key, value) in headers) {
             mockResponse.addHeader(key, value)
         }
+
         mockWebServer.enqueue(mockResponse.setBody(source.readString(StandardCharsets.UTF_8)))
+    }
+
+    fun enqueueError() {
+        val mockResponse = MockResponse()
+
+        mockWebServer.enqueue(mockResponse.setResponseCode(500))
     }
 
     fun createService(clazz: Class<T>): T {
         return Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    Moshi.Builder()
+                        .add(KotlinJsonAdapterFactory())
+                        .build()
+                )
+            )
+            .addCallAdapterFactory(NetworkResultCallAdapterFactory.create())
             .build()
             .create(clazz)
     }

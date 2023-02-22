@@ -1,6 +1,10 @@
 package com.example.network.model.photos
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+
+@JsonClass(generateAdapter = true)
 data class PhotoResponse(
     val id: Long,
     val owner: String,
@@ -8,7 +12,10 @@ data class PhotoResponse(
     val server: Int,
     val farm: Int,
     val title: String,
-    val ispublic: Int,
-    val isfriend: Int,
-    val isfamily: Int
+    @field:Json(name = "ispublic")
+    val isPublic: Int,
+    @field:Json(name = "isfriend")
+    val isFriend: Int,
+    @field:Json(name = "isfamily")
+    val isFamily: Int
 )

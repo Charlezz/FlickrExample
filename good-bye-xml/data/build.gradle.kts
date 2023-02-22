@@ -39,6 +39,7 @@ android {
 dependencies {
     implementation(project(Dependencies.GoodByeXml.DOMAIN))
     implementation(project(Dependencies.GoodByeXml.NETWORK))
+    implementation(project(Dependencies.GoodByeXml.LOCAL))
 
     implementation(Dependencies.AndroidX.CORE)
     implementation(Dependencies.AndroidX.AppCompat.APP_COMPAT)
@@ -50,6 +51,7 @@ dependencies {
 
     implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
     testImplementation(Dependencies.Kotest.ASSERTION)
+    testImplementation(Dependencies.Mockk.MOCKK)
 
     applyRoom()
     applyOkHttp3()

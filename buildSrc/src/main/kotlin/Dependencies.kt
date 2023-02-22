@@ -18,6 +18,14 @@ object Dependencies {
         const val MOCKITO_INLINE = "org.mockito:mockito-inline:$VERSION"
     }
 
+    object Mockk{
+        const val VERSION = "1.13.4"
+        const val MOCKK_ANDROID = "io.mockk:mockk-android:$VERSION"
+        const val MOCKK_AGENT = "io.mockk:mockk-agent:$VERSION"
+        const val MOCKK = "io.mockk:mockk:${VERSION}"
+
+    }
+
     object Kotest{
         const val ASSERTION = "io.kotest:kotest-assertions-core:5.5.5"
     }
@@ -222,7 +230,7 @@ object Dependencies {
             const val COMPILER = "androidx.room:room-compiler:$VERSION"
             const val KTX = "androidx.room:room-ktx:$VERSION"
             const val ROOM_TESTING = "androidx.room:room-testing:$VERSION"
-            const val ROOM_PAGING = "androidx.room:room-paging:2.5.0-alpha03"
+            const val ROOM_PAGING = "androidx.room:room-paging:$VERSION"
         }
     }
 
@@ -262,6 +270,10 @@ object Dependencies {
         const val TIMBER = "com.jakewharton.timber:timber:5.0.1"
     }
 
+    object SkyDove {
+        const val Orbital = "com.github.skydoves:orbital:0.2.4"
+    }
+
 
     object Io {
         object Coil {
@@ -289,6 +301,7 @@ object Dependencies {
         const val DOMAIN = ":good-bye-xml:domain"
         const val DATA = ":good-bye-xml:data"
         const val NETWORK = ":good-bye-xml:network"
+        const val LOCAL = ":good-bye-xml:local"
     }
 }
 

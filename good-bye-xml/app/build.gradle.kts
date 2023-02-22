@@ -65,9 +65,13 @@ dependencies {
     implementation(Dependencies.AndroidX.Paging.PAGING_COMPOSE)
     implementation(Dependencies.AndroidX.Paging.PAGING_RUNTIME_KTX)
 
+    implementation(Dependencies.SkyDove.Orbital)
+
 
     /* Test implementations */
     testImplementation(Dependencies.Junit.JUNIT)
+    testImplementation(Dependencies.Mockk.MOCKK_ANDROID)
+    testImplementation(Dependencies.Mockk.MOCKK_AGENT)
 
 
     /* Android Test implementations */
