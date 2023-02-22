@@ -27,6 +27,12 @@ android {
             "SECRET_KEY",
             "\"${gradleLocalProperties(rootDir).getProperty("secret.key")?:"local.properties 에 secret.key 를 추가 하세요"}\""
         )
+
+        buildConfigField(
+            "String",
+            "SERVER_ID",
+            "\"${gradleLocalProperties(rootDir).getProperty("server.id")?:"local.properties 에 server.id 를 추가 하세요"}\""
+        )
     }
 
     buildTypes {
@@ -61,4 +67,5 @@ dependencies {
 
     applyHilt()
     applyRoom()
+    applyTest()
 }

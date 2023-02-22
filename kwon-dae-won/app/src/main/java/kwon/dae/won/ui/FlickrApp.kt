@@ -1,116 +1,80 @@
 package kwon.dae.won.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.paging.compose.LazyPagingItems
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import kwon.dae.won.domain.model.Photo
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import kwon.dae.won.FlickrViewModel
 
 
 /**
  * @author Daewon on 10,February,2023
  *
  */
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun FlickrApp(
-    photos: LazyPagingItems<Photo>,
-    onLongClick: (Int) -> Unit,
+    viewModel: FlickrViewModel = viewModel(),
 ) {
+    val lazyPagingPhotos = viewModel.recentImage.collectAsLazyPagingItems()
+    val photos by remember { mutableStateOf(lazyPagingPhotos) }
+    var openDialog by remember { mutableStateOf(false to -1) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val keyWord by viewModel.searchKeyword.collectAsStateWithLifecycle()
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(100.dp),
-    ) {
-        items(photos.itemCount) { index ->
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (photos[index]?.id?.isNotBlank() == true) {
-                    var isImageLoading by remember { mutableStateOf(false) }
-
-                    val painter = rememberAsyncImagePainter(
-                        model = loadImageData(
-                            LocalContext.current,
-                            photos[index]?.id,
-                            photos[index]?.secret
-                        )
-                    )
-
-                    isImageLoading = when (painter.state) {
-                        is AsyncImagePainter.State.Loading -> true
-                        else -> false
-                    }
-
-                    Box(
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .width(200.dp)
-                                .height(150.dp)
-                                .combinedClickable(
-                                    onClick = { },
-                                    onLongClick = { onLongClick(index) }
-                                ),
-                            painter = painter,
-                            contentDescription = "Photo Image",
-                            contentScale = ContentScale.FillBounds,
-                        )
-
-                        if (isImageLoading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .padding(horizontal = 6.dp, vertical = 3.dp),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            CurrentPhotoList(
+                photos = photos,
+                onLongClick = { index ->
+                    openDialog = true to index
+                },
+                keyWord = keyWord,
+                onValueChange = {
+                    viewModel.setKeyword(it)
+                },
+                onSearchClick = {
+                    viewModel.searchKeyWordPhotos(keyWord)
+                },
+                onCancelClick = {
+                    viewModel.resetKeyword()
                 }
-            }
+            )
         }
     }
-}
 
-@Composable
-fun DefaultAlertDialog(
-    onConfirmButtonClick: () -> Unit,
-    onDismissButtonClick: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = { },
-        title = {
-            Text(text = "다운로드 하시겠습니까?")
-        },
-        text = {
-            Text(text = "확인을 누르시면 사진이 다운로드됩니다.")
-        },
-        dismissButton = {
-            TextButton(
-                onClick = { onDismissButtonClick() }
-            ) {
-                Text("취소")
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onConfirmButtonClick() }
-            ) {
-                Text("확인")
-            }
-        },
-    )
+    if (openDialog.first) {
+        photos[openDialog.second]?.let { photo ->
+            DefaultAlertDialog(
+                url = imageUrl(photo.id, photo.secret),
+                onDismissButtonClick = { openDialog = false to -1 },
+                onConfirmButtonClick = {
+                    viewModel.downloadPhoto(
+                        photo.title.ifBlank { photo.id },
+                        photo.owner,
+                        imageUrl(photo.id, photo.secret)
+                    )
+                    openDialog = false to -1
+                }
+            )
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.suggestQuery.collect {
+            viewModel.searchKeyWordPhotos(it)
+        }
+    }
+
 }

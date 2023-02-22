@@ -15,7 +15,7 @@ import kwon.dae.won.domain.model.Photo
 @Dao
 interface PhotosDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(photos: List<PhotoDTO>)
 
     @Query("SELECT * FROM photos ORDER BY id DESC")
@@ -26,4 +26,7 @@ interface PhotosDao {
 
     @Query("DELETE FROM photos")
     suspend fun clearAllPhotos()
+
+    @Query("Select created_at From photos Order By created_at DESC LIMIT 1")
+    suspend fun getCreationTime(): Long?
 }

@@ -12,12 +12,9 @@ object PhotoMapper {
             id = dto.id,
             owner = dto.owner,
             secret = dto.secret,
-            server = dto.server,
-            farm = dto.farm,
             title = dto.title,
-            ispublic = dto.ispublic,
-            isfriend = dto.isfriend,
-            isfamily = dto.isfamily,
+            page = dto.page,
+            maxPage = dto.maxPage,
         )
     }
 }

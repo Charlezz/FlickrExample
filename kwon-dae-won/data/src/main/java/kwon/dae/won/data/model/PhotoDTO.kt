@@ -13,10 +13,9 @@ data class PhotoDTO(
     val id: String,
     val owner: String,
     val secret: String,
-    val server: String,
-    val farm: Int,
     val title: String,
-    val ispublic: Int,
-    val isfriend: Int,
-    val isfamily: Int,
+    val page: Int,
+    val maxPage: Int,
+    @ColumnInfo(name = "created_at")
+    val createAt: Long = System.currentTimeMillis()
 )
