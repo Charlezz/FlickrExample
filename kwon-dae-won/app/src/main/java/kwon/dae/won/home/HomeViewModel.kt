@@ -1,4 +1,4 @@
-package kwon.dae.won
+package kwon.dae.won.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 const val PAGE_SIZE = 60
 
 @HiltViewModel
-class FlickrViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getRecentUseCase: GetRecentUseCase,
     private val downloadUseCase: DownloadUseCase,

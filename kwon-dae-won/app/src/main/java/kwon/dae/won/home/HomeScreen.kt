@@ -1,4 +1,4 @@
-package kwon.dae.won.ui
+package kwon.dae.won.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,6 +19,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -27,16 +30,103 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.flow.flowOf
 import kwon.dae.won.R
+import kwon.dae.won.component.FlickrTopAppBar
 import kwon.dae.won.domain.model.Photo
 import kwon.dae.won.domain.model.fake
+import kwon.dae.won.ui.SearchBar
+import kwon.dae.won.ui.imageUrl
+import kwon.dae.won.ui.loadImageData
 
 /**
  * @author Daewon on 13,February,2023
  *
  */
+
+@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigationIconClick: () -> Unit = {},
+) {
+    val lazyPagingPhotos = viewModel.recentImage.collectAsLazyPagingItems()
+    val photos by remember { mutableStateOf(lazyPagingPhotos) }
+    var openDialog by remember { mutableStateOf(false to -1) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val keyWord by viewModel.searchKeyword.collectAsStateWithLifecycle()
+
+    Scaffold(
+        topBar = {
+            FlickrTopAppBar(
+                onNavigationIconClick = onNavigationIconClick,
+                title = {
+                    Image(
+                        modifier = Modifier.size(30.dp),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.charlezz),
+                        contentDescription = null
+                    )
+                }
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
+
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            PhotoPagingList(
+                modifier = Modifier,
+                paddingValues = padding,
+                photos = photos,
+                onLongClick = { index ->
+                    openDialog = true to index
+                },
+                keyWord = keyWord,
+                onValueChange = {
+                    viewModel.setKeyword(it)
+                },
+                onSearchClick = {
+                    viewModel.searchKeyWordPhotos(keyWord)
+                },
+                onCancelClick = {
+                    viewModel.resetKeyword()
+                }
+            )
+        }
+
+        if (openDialog.first) {
+            photos[openDialog.second]?.let { photo ->
+                DefaultAlertDialog(
+                    url = imageUrl(photo.id, photo.secret),
+                    onDismissButtonClick = { openDialog = false to -1 },
+                    onConfirmButtonClick = {
+                        viewModel.downloadPhoto(
+                            photo.title.ifBlank { photo.id },
+                            photo.owner,
+                            imageUrl(photo.id, photo.secret)
+                        )
+                        openDialog = false to -1
+                    }
+                )
+            }
+        }
+    }
+
+
+    LaunchedEffect(Unit) {
+        viewModel.suggestQuery.collect {
+            viewModel.searchKeyWordPhotos(it)
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CurrentPhotoList(
+fun PhotoPagingList(
+    modifier: Modifier,
+    paddingValues: PaddingValues,
     photos: LazyPagingItems<Photo>,
     onLongClick: (Int) -> Unit,
     keyWord: String,
@@ -193,7 +283,9 @@ private fun LazyGridState.isScrollingUp(): Boolean {
 @Preview(name = "PhotoList", showSystemUi = true)
 @Composable
 fun PreviewCurrentPhotoList() {
-    CurrentPhotoList(
+    PhotoPagingList(
+        modifier = Modifier,
+        paddingValues = PaddingValues(0.dp),
         photos = flowOf(PagingData.from(Photo.fake())).collectAsLazyPagingItems(),
         onLongClick = { },
         keyWord = "Charlezz",

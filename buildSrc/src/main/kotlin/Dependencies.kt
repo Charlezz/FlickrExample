@@ -73,13 +73,14 @@ object Dependencies {
          * https://github.com/google/accompanist
          */
         object Accompanist {
-            const val VERSION = "0.27.0"
+            const val VERSION = "0.28.0"
             const val INSETS = "com.google.accompanist:accompanist-insets:$VERSION"
             const val SYSTEM_UI_CONTROLLER =
                 "com.google.accompanist:accompanist-systemuicontroller:$VERSION"
             const val FLOW_LAYOUT = "com.google.accompanist:accompanist-flowlayout:$VERSION"
             const val PAGER = "com.google.accompanist:accompanist-pager:$VERSION"
             const val SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$VERSION"
+            const val NAVIGATION_ANIMATION = "com.google.accompanist:accompanist-navigation-animation:$VERSION"
         }
 
 
@@ -88,6 +89,7 @@ object Dependencies {
             const val HILT_ANDROID_GRADLE_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$VERSION"
             const val HILT_ANDROID = "com.google.dagger:hilt-android:$VERSION"
             const val HILT_COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
+            const val HILT_NAVIGATION_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
         }
     }
 
@@ -176,7 +178,7 @@ object Dependencies {
             }
 
             object Material3 {
-                const val VERSION = "1.0.0-alpha13"
+                const val VERSION = "1.0.1"
                 const val MATERIAL3 = "androidx.compose.material3:material3:$VERSION"
                 const val MATERIAL3_WINDOW_SIZE_CLASS =
                     "androidx.compose.material3:material3-window-size-class:$VERSION"

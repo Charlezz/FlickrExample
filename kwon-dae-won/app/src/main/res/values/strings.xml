@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">권대원</string>
+    <string name="title_main">메인</string>
+    <string name="title_setting">설정</string>
+    <string name="title_gallery">갤러리</string>
 </resources>
