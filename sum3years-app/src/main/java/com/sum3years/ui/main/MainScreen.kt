@@ -1,6 +1,5 @@
 package com.sum3years.ui.main
 
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -21,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.TextFieldValue
@@ -41,7 +39,6 @@ fun MainScreen(
     onClick: (PhotoUIModel) -> Unit,
 ) {
     Column(modifier = modifier.widthIn(min = 100.dp)) {
-        val context = LocalContext.current
         val focusManager = LocalFocusManager.current
         val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -61,9 +58,8 @@ fun MainScreen(
         val backCallback = remember {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (!state.focused) {
+                    if (state.searchDisplay == SearchDisplay.Initial) {
                         isEnabled = false
-                        Toast.makeText(context, "Back", Toast.LENGTH_SHORT).show()
                         dispatcher.onBackPressed()
                     } else {
                         state.query = TextFieldValue("")
