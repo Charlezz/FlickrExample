@@ -73,8 +73,7 @@ fun HomeScreen(
 
         Surface(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+                .padding(top = padding.calculateTopPadding(), start = 0.dp, end = 0.dp, bottom = 0.dp)
         ) {
             PhotoPagingList(
                 modifier = Modifier,
