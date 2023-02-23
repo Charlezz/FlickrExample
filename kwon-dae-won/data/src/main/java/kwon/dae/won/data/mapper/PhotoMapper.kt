@@ -10,9 +10,11 @@ object PhotoMapper {
     fun from(dto: PhotoDTO): Photo {
         return Photo(
             id = dto.id,
+            owner = dto.owner,
             secret = dto.secret,
-            server = dto.server,
-            title = dto.title
+            title = dto.title,
+            page = dto.page,
+            maxPage = dto.maxPage,
         )
     }
 }
